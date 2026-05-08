@@ -1,5 +1,8 @@
 #include "Card.h"
-//³ª´Â ÀÌ ÇÁ·Î±×·¡¹Ö °úÁ¦¸¦ ´Ù¸¥ »ç¶÷ÀÇ ºÎÀûÀıÇÑ µµ¿ò ¾øÀÌ ¿Ï¼öÇÏ¿´½À´Ï´Ù.
+#include <iostream>
+
+//ë‚˜ëŠ” ì´ í”„ë¡œê·¸ë˜ë° ê³¼ì œë¥¼ ë‹¤ë¥¸ ì‚¬ëŒì˜ ë¶€ì ì ˆí•œ ë„ì›€ ì—†ì´ ì™„ìˆ˜í•˜ì˜€ìŠµë‹ˆë‹¤.
+
 void Card::setJob(int j)
 {
 	job = j;
@@ -17,7 +20,7 @@ void Card::setJob(int j)
 		name = co;
 		break;
 	default:
-		cout << "\nproblem, job out of range\n"; //¿¡·¯
+		std::cout << "\nproblem, job out of range\n"; //ì§ì—… ë²ˆí˜¸ê°€ ë²”ìœ„ë¥¼ ë²—ì–´ë‚¬ì„ ë•Œ ì•Œë¦¼
 		break;
 	}
 }

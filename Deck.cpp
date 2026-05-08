@@ -1,5 +1,8 @@
-#include"Deck.h"
-//³ª´Â ÀÌ ÇÁ·Î±×·¡¹Ö °úÁ¦¸¦ ´Ù¸¥ »ç¶÷ÀÇ ºÎÀûÀıÇÑ µµ¿ò ¾øÀÌ ¿Ï¼öÇÏ¿´½À´Ï´Ù.
+#include "Deck.h"
+#include <cstdlib>
+
+//ë‚˜ëŠ” ì´ í”„ë¡œê·¸ë˜ë° ê³¼ì œë¥¼ ë‹¤ë¥¸ ì‚¬ëŒì˜ ë¶€ì ì ˆí•œ ë„ì›€ ì—†ì´ ì™„ìˆ˜í•˜ì˜€ìŠµë‹ˆë‹¤.
+
 void Deck::setCard(int a, int b, int c, int d) {
 	cardl[0].setJob(a);
 	cardl[1].setJob(b);
@@ -12,7 +15,7 @@ int Deck::shuffle(int a) {
 	int rando = rand() % 5;
 	if (rando != 4)
 		cardl[rando].setJob(a);
-	return list[rando]; //»õ·Î¹Ş´Â Ä«µå
-} //±âÁ¸ Ä«µå¸¦ µ¦¿¡ ³Ö°í ²¨³»±â
+	return list[rando]; //ìƒˆë¡œ ë°›ëŠ” ì¹´ë“œ
+} //ê¸°ì¡´ ì¹´ë“œë¥¼ ë±ì— ë„£ê³  êº¼ë‚´ê¸°
 
 

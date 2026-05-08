@@ -1,16 +1,24 @@
 #include "Player.h"
-//³ª´Â ÀÌ ÇÁ·Î±×·¡¹Ö °úÁ¦¸¦ ´Ù¸¥ »ç¶÷ÀÇ ºÎÀûÀıÇÑ µµ¿ò ¾øÀÌ ¿Ï¼öÇÏ¿´½À´Ï´Ù.
+#include <cstdlib>
+#include <iostream>
+
+//ë‚˜ëŠ” ì´ í”„ë¡œê·¸ë˜ë° ê³¼ì œë¥¼ ë‹¤ë¥¸ ì‚¬ëŒì˜ ë¶€ì ì ˆí•œ ë„ì›€ ì—†ì´ ì™„ìˆ˜í•˜ì˜€ìŠµë‹ˆë‹¤.
+
+using namespace std;
+
+int Player::deadcnt = 0; //ì „ì²´ ê²Œì„ì—ì„œ íƒˆë½í•œ ì°¸ê°€ì ìˆ˜
+
 void Player::print()
 {
 	if (type) {
-		cout << "ÄÄÇ»ÅÍ " << type << " : ";
+		cout << "ì»´í“¨í„° " << type << " : ";
 		cout << "|  " << (cardl[0].open ? cardl[0].name : "  ????  ") << " (" << (cardl[0].open ? "o" : "c") << ") |   ";
 		cout << "|  " << (cardl[1].open ? cardl[1].name : "  ????  ") << " (" << (cardl[1].open ? "o" : "c") << ") |" << endl;
 		//cout << "|  " << cardl[0].name << " (" << (cardl[0].open ? "o" : "c") << ") |   ";
 		//cout << "|  " << cardl[1].name << " (" << (cardl[1].open ? "o" : "c") << ") |" << endl;
 	}
 	else {
-		cout << "ÇÃ·¹ÀÌ¾î : ";
+		cout << "í”Œë ˆì´ì–´ : ";
 		cout << "|  " << cardl[0].name << " (" << (cardl[0].open ? "o" : "c") << ") |   ";
 		cout << "|  " << cardl[1].name << " (" << (cardl[1].open ? "o" : "c") << ") |" << endl;
 	}
@@ -20,15 +28,15 @@ void Player::setCard(int a, int b)
 {
 	cardl[0].setJob(a);
 	cardl[1].setJob(b);
-} //Ä«µå¼¼ÆÃ
+} //ì¹´ë“œì„¸íŒ…
 
 void Player::openrand()
 {
 	int rando = rand() % 2;
 	if (die)
-		return; //Á×Àº»óÅÂ¶ó¸é ¸®ÅÏ
+		return; //ì£½ì€ìƒíƒœë¼ë©´ ë¦¬í„´
 
-	if (rando) { //2°³ÀÇ Ä«µåÁß ·£´ıÀ¸·Î ¿ÀÇÂ
+	if (rando) { //2ê°œì˜ ì¹´ë“œì¤‘ ëœë¤ìœ¼ë¡œ ì˜¤í”ˆ
 		if (!cardl[0].open)
 			cardl[0].open = 1;
 		else if (!cardl[1].open)
@@ -42,22 +50,22 @@ void Player::openrand()
 	}
 	if (cardl[0].open && cardl[1].open) {
 		die = 1;
-		deadcnt++; //static º¯¼ö, »ç¸ÁÀÚ¼ö
+		deadcnt++; //static ë³€ìˆ˜, ì‚¬ë§ììˆ˜
 
 		cout << "\n------------------------------------------\n";
 		if (type)
-			cout << "ÄÄÇ»ÅÍ" << type;
+			cout << "ì»´í“¨í„°" << type;
 		else
-			cout << "ÇÃ·¹ÀÌ¾î";
-		cout << "°¡ ÆĞ¹èÇÏ¿© °ÔÀÓ¿¡¼­ Á¦¿ÜµË´Ï´Ù.\n"
+			cout << "í”Œë ˆì´ì–´";
+		cout << "ê°€ íŒ¨ë°°í•˜ì—¬ ê²Œì„ì—ì„œ ì œì™¸ë©ë‹ˆë‹¤.\n"
 			<< "------------------------------------------\n";
 	}
-} //Ä«µå¸¦ ·£´ıÀ¸·Î ¿ÀÇÂ
+} //ì¹´ë“œë¥¼ ëœë¤ìœ¼ë¡œ ì˜¤í”ˆ
 
 int Player::cardhave(int i) {
 	int j = (cardl[0].job == i) + (cardl[1].job == i);
 	return j;
-} //ÇÃ·¹ÀÌ¾î°¡ Ä«µå¸¦ °¡Áö°í ÀÖ´ÂÁö È®ÀÎ
+} //í”Œë ˆì´ì–´ê°€ ì¹´ë“œë¥¼ ê°€ì§€ê³  ìˆëŠ”ì§€ í™•ì¸
 
 void Player::exchgeCard(int o, int news) {
 	if (cardl[0].job == o)
@@ -66,57 +74,59 @@ void Player::exchgeCard(int o, int news) {
 		cardl[1].setJob(news);
 	else
 		cout << "\nerror in exchangecard\n";
-} //±âÁ¸ÀÇ o Ä«µå¸¦ »õ news Ä«µå·Î ±³Ã¼
+} //ê¸°ì¡´ì˜ o ì¹´ë“œë¥¼ ìƒˆ news ì¹´ë“œë¡œ êµì²´
 
 void Player::coup(Player (& plr)[4]) {
 	int cou;
-	if (!type) { //ÇÃ·¹ÀÌ¾î ÀÎ°£
+	if (!type) { //í”Œë ˆì´ì–´ ì¸ê°„
 		do {
-			cout << "´©±¸¿¡°Ô Äí¸¦ ½ÃµµÇÏ½Ã°Ú½À´Ï±î?\n¼±ÅÃ : ";
+			cout << "ëˆ„êµ¬ì—ê²Œ ì¿ ë¥¼ ì‹œë„í•˜ì‹œê² ìŠµë‹ˆê¹Œ?\nì„ íƒ : ";
 			cin >> cou;
-			switch (cou) {
-			case 1:
-			case 2:
-			case 3: plr[cou].openrand(); break;
-			default: continue; //invalid input
-			} break;
+			if (cou < 1 || cou > 3) {
+				cout << "1~3ë²ˆ ì»´í“¨í„° ì¤‘ì—ì„œ ë‹¤ì‹œ ì„ íƒí•˜ì„¸ìš”.\n";
+				continue;
+			}
+			if (plr[cou].dead()) {
+				cout << "ì´ë¯¸ íƒˆë½í•œ ëŒ€ìƒì…ë‹ˆë‹¤. ë‹¤ì‹œ ì„ íƒí•˜ì„¸ìš”.\n";
+				continue;
+			}
+			plr[cou].openrand();
+			break;
 		} while (1);
 		coinplus(-7);
-		cout << "ÇÃ·¹ÀÌ¾î°¡ ÄÄÇ»ÅÍ " << cou
-			<< "¿¡°Ô Äí¸¦ ½ÃµµÇÕ´Ï´Ù. Ä«µå¸¦ ÇÑ Àå ¿ÀÇÂÇÕ´Ï´Ù.";
+		cout << "í”Œë ˆì´ì–´ê°€ ì»´í“¨í„° " << cou
+			<< "ì—ê²Œ ì¿ ë¥¼ ì‹œë„í•©ë‹ˆë‹¤. ì¹´ë“œë¥¼ í•œ ì¥ ì˜¤í”ˆí•©ë‹ˆë‹¤.";
 	}
-	else { //ÄÄÇ»ÅÍ
+	else { //ì»´í“¨í„°
 		do {
-			cou = prob(3); //·£´ı Äí ´ë»ó
-			if (cou == type)
-				cou = 3;
-		} while (plr[cou].dead()); //Á×Àº»ç¶÷ Äí ±İÁö
+			cou = prob(4); //0~3ë²ˆ ì°¸ê°€ì ì¤‘ ìê¸° ìì‹ ì„ ì œì™¸í•˜ê³  ì„ íƒ
+		} while (cou == type || plr[cou].dead()); //ìê¸° ìì‹  ë˜ëŠ” íƒˆë½ìëŠ” ëŒ€ìƒì—ì„œ ì œì™¸
 		plr[cou].openrand();
 		coinplus(-7);
 		if (cou) {
-			cout << "ÄÄÇ»ÅÍ°¡ ÄÄÇ»ÅÍ " << cou
-				<< "¿¡°Ô Äí¸¦ ½ÃµµÇÕ´Ï´Ù. Ä«µå¸¦ ÇÑ Àå ¿ÀÇÂÇÕ´Ï´Ù.";
+			cout << "ì»´í“¨í„°ê°€ ì»´í“¨í„° " << cou
+				<< "ì—ê²Œ ì¿ ë¥¼ ì‹œë„í•©ë‹ˆë‹¤. ì¹´ë“œë¥¼ í•œ ì¥ ì˜¤í”ˆí•©ë‹ˆë‹¤.";
 		}
 		else {
-			cout << "ÄÄÇ»ÅÍ°¡ ÇÃ·¹ÀÌ¾î "
-				<< "¿¡°Ô Äí¸¦ ½ÃµµÇÕ´Ï´Ù. Ä«µå¸¦ ÇÑ Àå ¿ÀÇÂÇÕ´Ï´Ù.";
+			cout << "ì»´í“¨í„°ê°€ í”Œë ˆì´ì–´ "
+				<< "ì—ê²Œ ì¿ ë¥¼ ì‹œë„í•©ë‹ˆë‹¤. ì¹´ë“œë¥¼ í•œ ì¥ ì˜¤í”ˆí•©ë‹ˆë‹¤.";
 		}
 	}
 	return;
-}// Äí ½Ãµµ
+}// ì¿  ì‹œë„
 
 int Player::botherwonjo() {
 	int a;
 	if (die)
-		return 0; //Á×Àº»ç¶÷Àº ¹æÇØ ¸øÇÔ
+		return 0; //ì£½ì€ì‚¬ëŒì€ ë°©í•´ ëª»í•¨
 
-	if (cardhave(0)) //¹æÇØ°øÀÛ ¼ÒÁö
+	if (cardhave(0)) //ë°©í•´ê³µì‘ ì†Œì§€
 		a = 1;
-	else if (!prob(10)) //10% È®·ü
+	else if (!prob(10)) //10% í™•ë¥ 
 		a = 1;
 	else
 		a = 0;
 	return a;
-} //¹æÇØ ¿©ºÎ ¸®ÅÏ
+} //ë°©í•´ ì—¬ë¶€ ë¦¬í„´
 
 

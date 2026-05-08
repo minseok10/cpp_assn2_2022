@@ -1,31 +1,29 @@
 #pragma once
-#include"Card.h"
-#include"randoms.h"
-//³ª´Â ÀÌ ÇÁ·Î±×·¡¹Ö °úÁ¦¸¦ ´Ù¸¥ »ç¶÷ÀÇ ºÎÀûÀıÇÑ µµ¿ò ¾øÀÌ ¿Ï¼öÇÏ¿´½À´Ï´Ù.
+#include "Card.h"
+#include "randoms.h"
+
+//ë‚˜ëŠ” ì´ í”„ë¡œê·¸ë˜ë° ê³¼ì œë¥¼ ë‹¤ë¥¸ ì‚¬ëŒì˜ ë¶€ì ì ˆí•œ ë„ì›€ ì—†ì´ ì™„ìˆ˜í•˜ì˜€ìŠµë‹ˆë‹¤.
+
 class Player
 {
 private:
 	int coin;
-	int type; //0:ÀÎ°£, 123:pc
+	int type; //0:ì¸ê°„, 1~3:ì»´í“¨í„°
 	int die;
 	Card cardl[2];
 public:
-	static int deadcnt; //ÃÑ»ç¸ÁÀÚ¼ö
-	Player(int type_) {
-		type = type_;
-		coin = 2;
-		die = 0;
-	}
-	void print(); //Ä«µå ³»¿ë Ãâ·Â
-	void setCard(int, int); //Ä«µå ÃÊ±â¼¼ÆÃ
-	int coins() { return coin; }
+	static int deadcnt; //ì´ì‚¬ë§ììˆ˜
+	Player(int type_) : coin(2), type(type_), die(0) {}
+	void print(); //ì¹´ë“œ ë‚´ìš© ì¶œë ¥
+	void setCard(int, int); //ì¹´ë“œ ì´ˆê¸°ì„¸íŒ…
+	int coins() const { return coin; }
 	void coinplus(int a) { coin += a; }
-	void openrand(); //·£´ıÀ¸·Î Ä«µå¸¦ °ø°³
-	int cardhave(int); //Ä«µå¸¦ °¡Áö°í ÀÖ´Â°¡?
-	void exchgeCard(int o, int news); //Ä«µå ±³È¯
-	void coup(Player(&plr)[4]); //Äí ½ÇÇà
-	int dead() { return die; }
-	int botherwonjo(); //¿øÁ¶¹æÇØ 10% ¿©ºÎ
+	void openrand(); //ëœë¤ìœ¼ë¡œ ì¹´ë“œë¥¼ ê³µê°œ
+	int cardhave(int); //ì¹´ë“œë¥¼ ê°€ì§€ê³  ìˆëŠ”ê°€?
+	void exchgeCard(int o, int news); //ì¹´ë“œ êµí™˜
+	void coup(Player(&plr)[4]); //ì¿  ì‹¤í–‰
+	int dead() const { return die; }
+	int botherwonjo(); //ì›ì¡°ë°©í•´ 10% ì—¬ë¶€
 };
 
 

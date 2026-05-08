@@ -1,8 +1,14 @@
-#include"randoms.h"
-#include<iostream>
-//³ª´Â ÀÌ ÇÁ·Î±×·¡¹Ö °úÁ¦¸¦ ´Ù¸¥ »ç¶÷ÀÇ ºÎÀûÀýÇÑ µµ¿ò ¾øÀÌ ¿Ï¼öÇÏ¿´½À´Ï´Ù.
+#include "randoms.h"
+#include <cstdlib>
+
+//ë‚˜ëŠ” ì´ í”„ë¡œê·¸ëž˜ë° ê³¼ì œë¥¼ ë‹¤ë¥¸ ì‚¬ëžŒì˜ ë¶€ì ì ˆí•œ ë„ì›€ ì—†ì´ ì™„ìˆ˜í•˜ì˜€ìŠµë‹ˆë‹¤.
+
 int prob(int a)
 {
+	if (a <= 0) {
+		return 0;
+	}
+
 	int temp = rand() % a;
 
 	return temp;

@@ -1,1 +1,5 @@
-/20180400.pdf
+20180400.pdf
+coup_game
+*.o
+*.out
+.DS_Store

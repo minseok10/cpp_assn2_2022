@@ -1,7 +1,9 @@
 #pragma once
-#include"Player.h"
-#include"Deck.h"
-//³ª´Â ÀÌ ÇÁ·Î±×·¡¹Ö °úÁ¦¸¦ ´Ù¸¥ »ç¶÷ÀÇ ºÎÀûÀıÇÑ µµ¿ò ¾øÀÌ ¿Ï¼öÇÏ¿´½À´Ï´Ù.
+#include "Player.h"
+#include "Deck.h"
+
+//ë‚˜ëŠ” ì´ í”„ë¡œê·¸ë˜ë° ê³¼ì œë¥¼ ë‹¤ë¥¸ ì‚¬ëŒì˜ ë¶€ì ì ˆí•œ ë„ì›€ ì—†ì´ ì™„ìˆ˜í•˜ì˜€ìŠµë‹ˆë‹¤.
+
 class Run
 {
 private:
@@ -9,13 +11,14 @@ private:
 	Deck deck;
 	void usrturn();
 	void pcturn(int);
-	void dispCard(); //Ä«µå¸ñ·ÏÇ¥½Ã
-	int p20p(int); //20%È®·ü·Î µ¹¾Æ°¡¸ç ´ë»óÀÚ ÃßÃâ
-	int chall(int, int, int); //µµÀüÇÏ±â challenge
-	void shuffle(int(&shuff)[12]); //ÃÊ±â Ä«µå¼¯±â
+	void dispCard(); //ì¹´ë“œëª©ë¡í‘œì‹œ
+	int p20p(int); //20%í™•ë¥ ë¡œ ëŒì•„ê°€ë©° ëŒ€ìƒì ì¶”ì¶œ
+	int chall(int, int, int); //ë„ì „í•˜ê¸° challenge
+	void shuffle(int(&shuff)[12]); //ì´ˆê¸° ì¹´ë“œì„ê¸°
+	int randomOpponent(int self); //ì‚´ì•„ ìˆëŠ” ìƒëŒ€ ì¤‘ í•œ ëª…ì„ ë¬´ì‘ìœ„ë¡œ ì„ íƒ
 public:
-	void print(); //ÃÊ±â¼³¸í¼­ Ãâ·Â
-	void turns(); //°ÔÀÓ ÁøÇà
+	void print(); //ì´ˆê¸°ì„¤ëª…ì„œ ì¶œë ¥
+	void turns(); //ê²Œì„ ì§„í–‰
 };
 
 

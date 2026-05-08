@@ -1,18 +1,23 @@
 #pragma once
-#include<iostream>
-//³ª´Â ÀÌ ÇÁ·Î±×·¡¹Ö °úÁ¦¸¦ ´Ù¸¥ »ç¶÷ÀÇ ºÎÀûÀıÇÑ µµ¿ò ¾øÀÌ ¿Ï¼öÇÏ¿´½À´Ï´Ù.
-using namespace std;
+#include <string>
+
+//ë‚˜ëŠ” ì´ í”„ë¡œê·¸ë˜ë° ê³¼ì œë¥¼ ë‹¤ë¥¸ ì‚¬ëŒì˜ ë¶€ì ì ˆí•œ ë„ì›€ ì—†ì´ ì™„ìˆ˜í•˜ì˜€ìŠµë‹ˆë‹¤.
+
+// ì¿  ê²Œì„ì—ì„œ ì‚¬ìš©ë˜ëŠ” ì˜í–¥ë ¥ ì¹´ë“œ í•œ ì¥ì„ í‘œí˜„í•œë‹¤.
+// job: 0=ê³µì‘, 1=ì•”ì‚´ì, 2=ì‚¬ë ¹ê´€, 3=ë°±ì‘ë¶€ì¸, 4=ë¯¸ì„¤ì •
+// open: 0=ë¹„ê³µê°œ, 1=ê³µê°œ
 class Card
 {
 private:
-	const string du;
-	const string as;
-	const string ca;
-	const string co;
+	const std::string du;
+	const std::string as;
+	const std::string ca;
+	const std::string co;
 public:
-	string name;
+	std::string name;
 	int job;
 	int open;
+
 	Card() : du("   Duke "), as("Assassin"), ca(" Captain"), co("Contessa")
 	{
 		job = 4;
