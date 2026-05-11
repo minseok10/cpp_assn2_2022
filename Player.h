@@ -18,6 +18,7 @@ public:
 	void setCard(int, int); //카드 초기세팅
 	int coins() const { return coin; }
 	void coinplus(int a) { coin += a; }
+	int takeCoins(int amount); //최대 amount개까지 코인을 빼앗김
 	void openrand(); //랜덤으로 카드를 공개
 	int cardhave(int); //카드를 가지고 있는가?
 	void exchgeCard(int o, int news); //카드 교환
@@ -25,5 +26,4 @@ public:
 	int dead() const { return die; }
 	int botherwonjo(); //원조방해 10% 여부
 };
-
 

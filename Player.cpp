@@ -31,6 +31,17 @@ void Player::setCard(int a, int b)
 	cardl[1].setJob(b);
 } //카드세팅
 
+int Player::takeCoins(int amount)
+{
+	if (amount <= 0) {
+		return 0;
+	}
+
+	int taken = coin < amount ? coin : amount;
+	coin -= taken;
+	return taken;
+} //강탈 시 코인이 음수가 되지 않도록 실제 빼앗긴 코인 수를 반환
+
 void Player::openrand()
 {
 	int rando = rand() % 2;
@@ -64,14 +75,14 @@ void Player::openrand()
 } //카드를 랜덤으로 오픈
 
 int Player::cardhave(int i) {
-	int j = (cardl[0].job == i) + (cardl[1].job == i);
+	int j = (cardl[0].job == i && !cardl[0].open) + (cardl[1].job == i && !cardl[1].open);
 	return j;
-} //플레이어가 카드를 가지고 있는지 확인
+} //플레이어가 공개되지 않은 활성 카드를 가지고 있는지 확인
 
 void Player::exchgeCard(int o, int news) {
-	if (cardl[0].job == o)
+	if (cardl[0].job == o && !cardl[0].open)
 		cardl[0].setJob(news);
-	else if (cardl[1].job == o)
+	else if (cardl[1].job == o && !cardl[1].open)
 		cardl[1].setJob(news);
 	else
 		cout << "\nerror in exchangecard\n";
@@ -128,4 +139,3 @@ int Player::botherwonjo() {
 		a = 0;
 	return a;
 } //방해 여부 리턴
-

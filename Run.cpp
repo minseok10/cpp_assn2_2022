@@ -80,17 +80,13 @@ void Run::dispCard()
 }//카드 표시
 
 int Run::p20p(int a) {
-	int randi;
-	
-		if (!(rand() % 5)&& a!=1 && !plr[1].dead()) //20%possibility 도전
-			randi = 1;
-		else if (!(rand() % 5)&&a!=2 && !plr[2].dead())
-			randi = 2;
-		else if (!(rand() % 5)&&a!=3 && !plr[3].dead())
-			randi = 3;
-		else
-			randi = a;
-	return randi;
+	for (int candidate = 1; candidate <= 3; candidate++) {
+		if (candidate != a && !plr[candidate].dead() && !prob(5)) {
+			return candidate;
+		}
+	}
+
+	return a;
 } //20% 확률로 도전자 정하기, 본인(a)이 리턴되면, 도전하지않음을 의미
 
 int Run::randomOpponent(int self)
@@ -363,9 +359,9 @@ void Run::usrturn()
 						} //end challenge
 						
 						if (passed1) {
-							cout << "사령관 카드를 통해 컴퓨터" << attack << "의 코인 2개를 강탈합니다.";
-							plr[0].coinplus(2);
-							plr[attack].coinplus(-2);
+							int taken = plr[attack].takeCoins(2);
+							cout << "사령관 카드를 통해 컴퓨터" << attack << "의 코인 " << taken << "개를 강탈합니다.";
+							plr[0].coinplus(taken);
 						}
 						else {
 							cout << "플레이어가 컴퓨터" << attack << "강탈에 실패하였습니다. ";
@@ -533,7 +529,7 @@ void Run::pcturn(int self)
 							if (plr[attack].cardhave(3))
 								randi2 = 1; //방해카드소지
 							else
-								randi2 = prob(5); //20% 확률로 방해
+								randi2 = !prob(5); //20% 확률로 방해
 						}
 						else {
 							yesi = Input::readYesNo("플레이어가 암살을 당하려고 합니다. 방해합니까? (y/n)\n");
@@ -624,14 +620,14 @@ void Run::pcturn(int self)
 						} //end challenge
 
 						if (passed1) {
-							cout << "암살자 카드를 통해 ";
+							cout << "사령관 카드를 통해 ";
 							if (attack)
 								cout << "컴퓨터" << attack << "의 ";
 							else
 								cout << "플레이어의 ";
-							cout << "코인 2개를 강탈합니다.";
-							plr[self].coinplus(2);
-							plr[attack].coinplus(-2);
+							int taken = plr[attack].takeCoins(2);
+							cout << "코인 " << taken << "개를 강탈합니다.";
+							plr[self].coinplus(taken);
 						}
 						else {
 							cout << "컴퓨터" << self << "가 ";
