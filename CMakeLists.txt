@@ -7,7 +7,7 @@ include(GNUInstallDirs)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(Qt6 REQUIRED COMPONENTS Quick)
+find_package(Qt6 REQUIRED COMPONENTS Quick QuickControls2)
 qt_standard_project_setup(REQUIRES 6.5)
 
 if(COMMAND qt_policy)
@@ -45,6 +45,7 @@ qt_add_executable(resistance_coup_gui
 target_link_libraries(resistance_coup_gui
     PRIVATE
         Qt6::Quick
+        Qt6::QuickControls2
         coup_core
 )
 
