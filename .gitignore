@@ -1,6 +1,7 @@
 20180400.pdf
 coup_game
 build*/
+dist/
 CMakeFiles/
 CMakeCache.txt
 cmake_install.cmake
