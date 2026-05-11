@@ -127,7 +127,7 @@ Item {
 
                 Rectangle {
                     Layout.fillWidth: true
-                    Layout.preferredHeight: 118
+                    Layout.preferredHeight: 252
                     radius: 8
                     border.color: "#c7d0d9"
                     color: "#ffffff"
@@ -137,28 +137,74 @@ Item {
                         anchors.margins: 14
                         spacing: 10
 
+                        Rectangle {
+                            Layout.fillWidth: true
+                            Layout.preferredHeight: gameController.waitingForHuman ? 54 : 0
+                            visible: gameController.waitingForHuman
+                            radius: 6
+                            border.color: "#f0b429"
+                            color: "#fffbea"
+
+                            RowLayout {
+                                anchors.fill: parent
+                                anchors.margins: 10
+                                spacing: 8
+
+                                Label {
+                                    text: gameController.pendingPrompt
+                                    Layout.fillWidth: true
+                                    wrapMode: Text.WordWrap
+                                    font.pixelSize: 13
+                                    color: "#513c06"
+                                }
+
+                                Button {
+                                    text: "Yes"
+                                    implicitWidth: 70
+                                    onClicked: {
+                                        if (gameController.pendingType === "challenge")
+                                            gameController.answerChallenge(true)
+                                        else
+                                            gameController.answerCounter(true)
+                                    }
+                                }
+
+                                Button {
+                                    text: "No"
+                                    implicitWidth: 70
+                                    onClicked: {
+                                        if (gameController.pendingType === "challenge")
+                                            gameController.answerChallenge(false)
+                                        else
+                                            gameController.answerCounter(false)
+                                    }
+                                }
+                            }
+                        }
+
                         RowLayout {
                             Layout.fillWidth: true
                             spacing: 10
 
                             Button {
                                 text: "Income"
-                                enabled: gameController.humanTurn
+                                enabled: gameController.humanTurn && gameController.canTax
                                 Layout.fillWidth: true
                                 onClicked: gameController.performIncome()
                             }
 
                             Button {
                                 text: "Foreign Aid"
-                                enabled: gameController.humanTurn
+                                enabled: gameController.humanTurn && gameController.canTax
                                 Layout.fillWidth: true
                                 onClicked: gameController.performForeignAid()
                             }
 
                             Button {
-                                text: "Character Actions"
-                                enabled: false
+                                text: "Duke Tax"
+                                enabled: gameController.canTax
                                 Layout.fillWidth: true
+                                onClicked: gameController.performTax()
                             }
                         }
 
@@ -184,6 +230,67 @@ Item {
                                     Layout.fillWidth: true
                                     onClicked: gameController.performCoup(modelData.index)
                                 }
+                            }
+                        }
+
+                        RowLayout {
+                            Layout.fillWidth: true
+                            spacing: 8
+
+                            Label {
+                                text: "Assassinate"
+                                font.pixelSize: 14
+                                color: "#52606d"
+                            }
+
+                            Repeater {
+                                model: gameController.players
+
+                                Button {
+                                    required property var modelData
+
+                                    visible: !modelData.human
+                                    text: modelData.name
+                                    enabled: gameController.canAssassinate && !modelData.dead
+                                    Layout.fillWidth: true
+                                    onClicked: gameController.performAssassinate(modelData.index)
+                                }
+                            }
+                        }
+
+                        RowLayout {
+                            Layout.fillWidth: true
+                            spacing: 8
+
+                            Label {
+                                text: "Steal"
+                                font.pixelSize: 14
+                                color: "#52606d"
+                            }
+
+                            Repeater {
+                                model: gameController.players
+
+                                Button {
+                                    required property var modelData
+
+                                    visible: !modelData.human
+                                    text: modelData.name
+                                    enabled: gameController.canSteal && !modelData.dead
+                                    Layout.fillWidth: true
+                                    onClicked: gameController.performSteal(modelData.index)
+                                }
+                            }
+                        }
+
+                        RowLayout {
+                            Layout.fillWidth: true
+                            spacing: 8
+
+                            Button {
+                                text: "Exchange"
+                                enabled: false
+                                Layout.fillWidth: true
                             }
                         }
                     }

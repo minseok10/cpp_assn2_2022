@@ -72,18 +72,62 @@ QStringList GameController::logLines() const
 bool GameController::humanTurn() const
 {
     const GameState& state = m_engine.state();
-    return state.gameStarted && !state.gameOver && state.currentPlayer == 0;
+    return state.gameStarted && !state.gameOver && !state.waitingForHuman && state.currentPlayer == 0;
+}
+
+bool GameController::waitingForHuman() const
+{
+    return m_engine.state().waitingForHuman;
+}
+
+QString GameController::pendingType() const
+{
+    return QString::fromStdString(m_engine.state().pendingType);
+}
+
+QString GameController::pendingPrompt() const
+{
+    return QString::fromStdString(m_engine.state().pendingPrompt);
 }
 
 bool GameController::canCoup() const
 {
-    const QVariantList playerList = players();
-    if (playerList.isEmpty()) {
+    const GameState& state = m_engine.state();
+    if (state.players.empty()) {
         return false;
     }
 
-    const QVariantMap player = playerList.first().toMap();
-    return humanTurn() && player.value("coins").toInt() >= 7;
+    return humanTurn() && state.players[0].coins >= 7;
+}
+
+bool GameController::canTax() const
+{
+    const GameState& state = m_engine.state();
+    if (state.players.empty()) {
+        return false;
+    }
+
+    return humanTurn() && state.players[0].coins <= 9;
+}
+
+bool GameController::canAssassinate() const
+{
+    const GameState& state = m_engine.state();
+    if (state.players.empty()) {
+        return false;
+    }
+
+    return humanTurn() && state.players[0].coins >= 3 && state.players[0].coins <= 9;
+}
+
+bool GameController::canSteal() const
+{
+    const GameState& state = m_engine.state();
+    if (state.players.empty()) {
+        return false;
+    }
+
+    return humanTurn() && state.players[0].coins <= 9;
 }
 
 bool GameController::gameOver() const
@@ -108,13 +152,44 @@ void GameController::performIncome()
 {
     if (m_engine.income()) {
         refreshState("Income resolved.");
+    } else {
+        refreshState("Choose Coup when you have 10 or more coins.");
     }
 }
 
 void GameController::performForeignAid()
 {
     if (m_engine.foreignAid()) {
-        refreshState("Foreign Aid resolved. Blocking is TODO.");
+        refreshState(m_engine.state().waitingForHuman ? "Waiting for your challenge decision." : "Foreign Aid resolved.");
+    } else {
+        refreshState("Choose Coup when you have 10 or more coins.");
+    }
+}
+
+void GameController::performTax()
+{
+    if (m_engine.tax()) {
+        refreshState("Duke Tax resolved.");
+    } else {
+        refreshState("Duke Tax is unavailable.");
+    }
+}
+
+void GameController::performAssassinate(int target)
+{
+    if (m_engine.assassinate(target)) {
+        refreshState(m_engine.state().waitingForHuman ? "Waiting for your challenge decision." : "Assassination resolved.");
+    } else {
+        refreshState("Assassination needs 3 coins and a living computer target.");
+    }
+}
+
+void GameController::performSteal(int target)
+{
+    if (m_engine.steal(target)) {
+        refreshState(m_engine.state().waitingForHuman ? "Waiting for your challenge decision." : "Steal resolved.");
+    } else {
+        refreshState("Steal needs a living computer target.");
     }
 }
 
@@ -125,6 +200,20 @@ void GameController::performCoup(int target)
     }
     else {
         refreshState("Coup needs 7 coins and a living computer target.");
+    }
+}
+
+void GameController::answerChallenge(bool challenge)
+{
+    if (m_engine.answerChallenge(challenge)) {
+        refreshState("Challenge decision resolved.");
+    }
+}
+
+void GameController::answerCounter(bool counter)
+{
+    if (m_engine.answerCounter(counter)) {
+        refreshState("Counteraction decision resolved.");
     }
 }
 
