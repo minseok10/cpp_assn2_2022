@@ -4,6 +4,10 @@
 
 최신 GUI 버전은 `main` 브랜치에 둡니다. 기존 콘솔 전용 버전은 `console` 브랜치에 보존하고, 최초 손코딩 버전은 `original` 브랜치에 보존합니다.
 
+## Screenshot
+
+![Resistance Coup GUI screenshot](screenshot.png)
+
 ## 과제 배경
 
 보고서(`문서2.docx`)에 따르면 이 과제의 목표는 C++ class를 활용하여 객체지향 프로그래밍 구조를 익히는 것입니다. 상속은 사용하지 않고, 게임에 필요한 역할을 여러 클래스로 분리했습니다.
