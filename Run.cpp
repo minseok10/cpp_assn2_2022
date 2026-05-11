@@ -2,6 +2,7 @@
 #include "Input.h"
 #include <cstdlib>
 #include <ctime>
+#include <fstream>
 #include <iostream>
 
 //나는 이 프로그래밍 과제를 다른 사람의 부적절한 도움 없이 완수하였습니다.
@@ -10,6 +11,12 @@ using namespace std;
 
 void Run::print()
 {
+	ifstream file("assets/text/game_start.txt");
+	if (file) {
+		cout << file.rdbuf();
+		return;
+	}
+
 	cout << R"(게임에 참여하는 참가자는 플레이어와 컴퓨터 3명으로, 총 4명입니다.
 덱을 생성하고 카드를 분배합니다.
 참가자에게 카드 분배가 완료되었습니다.

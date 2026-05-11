@@ -8,8 +8,8 @@ class Prtstr
 {
 private:
 	std::string document;
+	static std::string loadText(const std::string& path, const std::string& fallback);
 public:
 	void prt();
 	Prtstr(int a);
 };
-
