@@ -2,7 +2,7 @@
 
 2022년 POSTECH 객체지향프로그래밍(Object-Oriented Programming) Assignment #2로 작성한 `Resistance Coup` 콘솔 게임입니다. 한 명의 사용자 플레이어와 세 명의 컴퓨터 플레이어가 참여하며, 카드 2장이 모두 공개되지 않고 마지막까지 남은 참가자가 승리합니다.
 
-이 저장소는 최초 손코딩 버전을 보존하는 `original` 브랜치와, GitHub 공개 및 실행 안정성을 위해 정리한 `codex` 브랜치로 나뉩니다.
+이 저장소는 최초 손코딩 버전을 보존하는 `original` 브랜치, Codex를 활용해 콘솔 버전을 정리하는 `codex` 브랜치, 콘솔이 아닌 GUI 버전 구현을 위한 `gui` 브랜치로 나누어 관리합니다.
 
 ## 과제 배경
 
@@ -58,12 +58,14 @@ g++ -std=c++17 -Wall -Wextra -pedantic main.cpp Card.cpp Deck.cpp Player.cpp Prt
 ## 브랜치 설명
 
 - `original`: 최초 손코딩 상태를 기념하고 보존하는 브랜치입니다. 기준 커밋 위에 브랜치 목적을 설명하는 README만 추가했습니다.
-- `codex`: 인코딩, 빌드, 입력 안정성, 규칙 처리, README를 정리한 개선 브랜치입니다.
+- `codex`: Codex를 사용해 기존 콘솔 버전을 읽기 좋게 정리하고, 빌드/입력/규칙 처리/문서화를 개선하기 위한 브랜치입니다.
+- `gui`: 콘솔 입출력이 아닌 GUI 환경에서 `Resistance Coup`을 구현하기 위한 브랜치입니다.
 
 ## codex 브랜치 개선 사항
 
 - 소스 파일 인코딩을 UTF-8로 정리했습니다.
 - `Makefile`과 `.gitignore`를 추가했습니다.
+- 메뉴와 게임 설명 같은 긴 출력 문구를 `assets/text` 아래의 별도 텍스트 asset으로 분리했습니다.
 - 컴파일 경고를 제거했습니다.
 - 잘못된 숫자 입력으로 `cin`이 실패하거나 배열 범위를 벗어날 수 있던 문제를 방지했습니다.
 - Enter 대기와 y/n 입력을 공통 입력 헬퍼로 정리했습니다.
