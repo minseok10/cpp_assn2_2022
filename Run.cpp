@@ -79,12 +79,88 @@ void Run::dispCard()
 {
 	cout << "플레이어들의 카드는 다음과 같습니다.\n" <<
 		"------------------------------------------------\n";
-	plr[0].print();
-	plr[1].print();
-	plr[2].print();
-	plr[3].print();
+	dispPlayerCard(0);
+	dispPlayerCard(1);
+	dispPlayerCard(2);
+	dispPlayerCard(3);
 	cout << "------------------------------------------------\n";
 }//카드 표시
+
+void Run::dispPlayerCard(int index)
+{
+	if (plr[index].playerType()) {
+		cout << "컴퓨터 " << index << " : ";
+		cout << "|  " << (plr[index].cardOpen(0) ? plr[index].cardName(0) : "  ????  ")
+			<< " (" << (plr[index].cardOpen(0) ? "o" : "c") << ") |   ";
+		cout << "|  " << (plr[index].cardOpen(1) ? plr[index].cardName(1) : "  ????  ")
+			<< " (" << (plr[index].cardOpen(1) ? "o" : "c") << ") |" << endl;
+	}
+	else {
+		cout << "플레이어 : ";
+		cout << "|  " << plr[index].cardName(0) << " (" << (plr[index].cardOpen(0) ? "o" : "c") << ") |   ";
+		cout << "|  " << plr[index].cardName(1) << " (" << (plr[index].cardOpen(1) ? "o" : "c") << ") |" << endl;
+	}
+}
+
+void Run::openRandomCard(int index)
+{
+	if (!plr[index].openrand()) {
+		return;
+	}
+
+	cout << "\n------------------------------------------\n";
+	if (index)
+		cout << "컴퓨터" << index;
+	else
+		cout << "플레이어";
+	cout << "가 패배하여 게임에서 제외됩니다.\n"
+		<< "------------------------------------------\n";
+}
+
+int Run::readCoupTarget()
+{
+	int target;
+	do {
+		target = Input::readInt("누구에게 쿠를 시도하시겠습니까?\n선택 : ");
+		if (target < 1 || target > 3) {
+			cout << "1~3번 컴퓨터 중에서 다시 선택하세요.\n";
+			continue;
+		}
+		if (plr[target].dead()) {
+			cout << "이미 탈락한 대상입니다. 다시 선택하세요.\n";
+			continue;
+		}
+		break;
+	} while (1);
+
+	return target;
+}
+
+void Run::executeCoup(int actor, int target)
+{
+	if (plr[actor].coup(target, plr)) {
+		cout << "\n------------------------------------------\n";
+		if (target)
+			cout << "컴퓨터" << target;
+		else
+			cout << "플레이어";
+		cout << "가 패배하여 게임에서 제외됩니다.\n"
+			<< "------------------------------------------\n";
+	}
+
+	if (actor) {
+		cout << "컴퓨터가 ";
+		if (target)
+			cout << "컴퓨터 " << target;
+		else
+			cout << "플레이어 ";
+		cout << "에게 쿠를 시도합니다. 카드를 한 장 오픈합니다.";
+	}
+	else {
+		cout << "플레이어가 컴퓨터 " << target
+			<< "에게 쿠를 시도합니다. 카드를 한 장 오픈합니다.";
+	}
+}
 
 int Run::p20p(int a) {
 	for (int candidate = 1; candidate <= 3; candidate++) {
@@ -120,7 +196,7 @@ int Run::chall(int out, int b, int in) {
 	if (plr[out].cardhave(b)) {
 
 		cout << "도전에 실패하였습니다.카드를 한 장 오픈합니다.\n";
-		plr[in].openrand();
+		openRandomCard(in);
 		//deck shuffle exchange
 
 		if (out)
@@ -128,7 +204,8 @@ int Run::chall(int out, int b, int in) {
 		else
 			cout << "플레이어는 거짓말을 하지 않았으므로,";
 		cout << "해당 카드를 덱에 포함시킨 후 한장을 새로 뽑습니다\n";
-		plr[out].exchgeCard(b, deck.shuffle(b)); //deck과의 데이터 교환.
+		if (!plr[out].exchgeCard(b, deck.shuffle(b)))
+			cout << "\nerror in exchangecard\n";
 		honest = 1;
 	}
 	else {
@@ -138,7 +215,7 @@ int Run::chall(int out, int b, int in) {
 		else
 			cout << "플레이어의 카드를 한 장 오픈합니다.\n";
 
-		plr[out].openrand();
+		openRandomCard(out);
 		honest = 0;
 	}
 		
@@ -157,7 +234,7 @@ void Run::usrturn()
 	cout << "무슨 행동을 하시겠습니까? 현재 코인 : " << plr[0].coins() << "개\n";
 	if (plr[0].coins() > 9) {
 		cout << "코인이 10개 이상이므로, 자동으로 쿠를 시도합니다.\n";
-		plr[0].coup(plr);
+		executeCoup(0, readCoupTarget());
 	}
 	else {
 		cout << R"(================================================
@@ -222,7 +299,7 @@ void Run::usrturn()
 						cout << "\n코인부족.코인7개필요\n";
 						continue;
 					}
-					plr[0].coup(plr);
+					executeCoup(0, readCoupTarget());
 					break;
 				default:
 					continue;
@@ -235,7 +312,7 @@ void Run::usrturn()
 			int passed2; //passed와 같은기능
 			do {
 				cout << "\n현재 보유 카드는 다음과 같습니다. 무슨 캐릭터의 행동을 시도하겠습니까?(공작: 0, 암살자: 1, 사령관: 2)\n";
-				plr[0].print();
+				dispPlayerCard(0);
 				cout << "선택: ";
 				b = Input::readInt("");
 				switch (b) {
@@ -312,7 +389,7 @@ void Run::usrturn()
 						}
 						if (passed1) {
 							cout << "암살자 카드를 통해 컴퓨터" << attack << "의 카드를 하나 오픈합니다.";
-							plr[attack].openrand();
+							openRandomCard(attack);
 							plr[0].coinplus(-3);
 						}
 						else {
@@ -401,7 +478,7 @@ void Run::pcturn(int self)
 	Input::waitForEnter("Enter를 눌러주세요");
 	if (plr[self].coins() > 9) {
 		cout << "코인이 10개 이상이므로, 자동으로 쿠를 시도합니다.\n";
-		plr[self].coup(plr);
+		executeCoup(self, randomOpponent(self));
 	}
 	else {
 		if (prob(2)) //50% 확률
@@ -465,7 +542,7 @@ void Run::pcturn(int self)
 				}
 				break;//case2 원조 end
 			case 3: //coup
-				plr[self].coup(plr);
+				executeCoup(self, randomOpponent(self));
 				break;
 			default:
 				cout << "error 451";
@@ -565,7 +642,7 @@ void Run::pcturn(int self)
 								cout << "플레이어의 ";
 							cout << "카드를 하나 오픈합니다.";
 							plr[self].coinplus(-3);
-							plr[attack].openrand();
+							openRandomCard(attack);
 						}
 						else {
 							cout << "컴퓨터" << self << "가 ";
