@@ -15,6 +15,7 @@ private:
 public:
 	static int deadcnt; //총사망자수
 	Player(int type_) : coin(2), type(type_), die(0) {}
+	void reset(int type_); //새 게임 상태로 초기화
 	void setCard(int, int); //카드 초기세팅
 	int playerType() const { return type; }
 	int coins() const { return coin; }

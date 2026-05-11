@@ -1,5 +1,9 @@
 20180400.pdf
 coup_game
+build*/
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
 *.o
 *.out
 .DS_Store

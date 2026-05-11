@@ -5,6 +5,19 @@
 
 int Player::deadcnt = 0; //전체 게임에서 탈락한 참가자 수
 
+void Player::reset(int type_)
+{
+	coin = 2;
+	type = type_;
+	die = 0;
+	cardl[0].job = 4;
+	cardl[0].open = 0;
+	cardl[0].name.clear();
+	cardl[1].job = 4;
+	cardl[1].open = 0;
+	cardl[1].name.clear();
+}
+
 void Player::setCard(int a, int b)
 {
 	cardl[0].setJob(a);
