@@ -22,8 +22,11 @@ struct GameState
 {
 	std::vector<PlayerState> players;
 	std::vector<std::string> log;
+	std::string pendingType;
+	std::string pendingPrompt;
 	int currentPlayer = 0;
 	int winner = -1;
 	bool gameStarted = false;
 	bool gameOver = false;
+	bool waitingForHuman = false;
 };
