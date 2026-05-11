@@ -1,4 +1,5 @@
 #include "Run.h"
+#include "Input.h"
 #include <cstdlib>
 #include <ctime>
 #include <iostream>
@@ -161,7 +162,7 @@ void Run::usrturn()
 2. 캐릭터 행동
 ================================================
 선택 : )";
-		cin >> a;
+		a = Input::readInt("");
 		if (a == 1) {
 			do {
 				cout << "\n다음 중 시행할 행동을 고르시오. 현재 코인 : " << plr[0].coins() << "개\n";
@@ -171,7 +172,7 @@ void Run::usrturn()
 3. 쿠(Coup)
 ================================================
 선택 : )";
-				cin >> b;
+				b = Input::readInt("");
 				switch (b) {
 				case 1: //소득
 					plr[0].coinplus(1);
@@ -193,8 +194,7 @@ void Run::usrturn()
 					case 2:
 					case 3:
 						cout << "컴퓨터" << randi << "가 플레이어의 해외 원조를 막았습니다.\n";
-						cout << "도전하시겠습니까?\n선택(y/n) :";
-						cin >> yesi;
+						yesi = Input::readYesNo("도전하시겠습니까?\n선택(y/n) :");
 						if (yesi == 'y') {
 							passed1 = !chall(randi, 0, 0); //방해에 도전
 						}
@@ -234,7 +234,7 @@ void Run::usrturn()
 				cout << "\n현재 보유 카드는 다음과 같습니다. 무슨 캐릭터의 행동을 시도하겠습니까?(공작: 0, 암살자: 1, 사령관: 2)\n";
 				plr[0].print();
 				cout << "선택: ";
-				cin >> b;
+				b = Input::readInt("");
 				switch (b) {
 				case 0: //duke
 					if (!plr[0].cardhave(b))
@@ -264,8 +264,7 @@ void Run::usrturn()
 						cout << "\n코인부족.코인3개필요\n";
 						continue;
 					}
-					cout << "카드를 오픈할 상대방을 선택해주세요.\n선택 : ";
-					cin >> attack;
+					attack = Input::readInt("카드를 오픈할 상대방을 선택해주세요.\n선택 : ");
 					if (attack < 1 || attack > 3) {
 						cout << "1~3번 컴퓨터 중에서 다시 선택하세요.\n";
 						continue;
@@ -299,8 +298,7 @@ void Run::usrturn()
 							randi2 = !prob(5); //20% 방해
 						if (randi2) {
 							cout << "컴퓨터" << attack << "가 플레이어의 암살을 막았습니다.\n";
-							cout << "도전하시겠습니까?\n선택(y/n) :";
-							cin >> yesi;
+							yesi = Input::readYesNo("도전하시겠습니까?\n선택(y/n) :");
 							if (yesi == 'y') {
 								passed1 = !chall(attack, 3, 0); //두번째 방해도전
 							} //end challenge
@@ -320,8 +318,7 @@ void Run::usrturn()
 					}
 					break; //case 1 assasuin end
 				case 2: //commander begin
-					cout << "상대에게 2코인을 강탈합니다. 강탈할 상대방을 정해주세요.\n선택 : ";
-					cin >> attack;
+					attack = Input::readInt("상대에게 2코인을 강탈합니다. 강탈할 상대방을 정해주세요.\n선택 : ");
 					if (attack < 1 || attack > 3) {
 						cout << "1~3번 컴퓨터 중에서 다시 선택하세요.\n";
 						continue;
@@ -355,8 +352,7 @@ void Run::usrturn()
 							randi2 = !prob(5); //20% 방해
 						if (randi2) {
 							cout << "컴퓨터" << attack << "가 플레이어의 강탈을 막았습니다.\n";
-							cout << "도전하시겠습니까?\n선택(y/n) :";
-							cin >> yesi;
+							yesi = Input::readYesNo("도전하시겠습니까?\n선택(y/n) :");
 							if (yesi == 'y') {
 								passed1 = !chall(attack, 2,0); //두번째 방해 도전
 							}
@@ -399,9 +395,7 @@ void Run::pcturn(int self)
 	char yesi = 'n';;
 	cout << "컴퓨터" << self << "의 턴입니다.\n";
 	cout << "행동을 고르고 있습니다...(Enter)\n";
-	while (getchar() != '\n'); //키보드버퍼 정리
-	cout << "Enter를 눌러주세요";
-	getchar();
+	Input::waitForEnter("Enter를 눌러주세요");
 	if (plr[self].coins() > 9) {
 		cout << "코인이 10개 이상이므로, 자동으로 쿠를 시도합니다.\n";
 		plr[self].coup(plr);
@@ -426,8 +420,7 @@ void Run::pcturn(int self)
 				cout << "컴퓨터" << self << "가 해외 원조를 선택하였습니다.\n";
 				yesi = 'n';
 				if (!plr[0].dead()) {
-					cout << "해외 원조를 방해합니까? (y/n):\n"; //사람이 도전 선택
-					cin >> yesi;
+					yesi = Input::readYesNo("해외 원조를 방해합니까? (y/n):\n"); //사람이 도전 선택
 				}
 				if (yesi == 'y')
 					randi = 0;
@@ -492,8 +485,7 @@ void Run::pcturn(int self)
 					cout << "컴퓨터" << self << "가 공작 카드가 있다고 주장합니다.\n";
 					yesi = 'n';
 					if (!plr[0].dead()) {
-						cout << "도전하시겠습니까 ? \n선택(y / n) : "; //challenge by human
-						cin >> yesi;
+						yesi = Input::readYesNo("도전하시겠습니까 ? \n선택(y / n) : "); //challenge by human
 					}
 					if (yesi == 'y')
 						randi = 0;
@@ -521,8 +513,7 @@ void Run::pcturn(int self)
 					cout << "컴퓨터" << self << "가 암살자 카드가 있다고 주장합니다.\n";
 					yesi = 'n';
 					if (!plr[0].dead()) { //죽은플레이어 스킵
-						cout << "도전하시겠습니까 ? \n선택(y / n) : ";
-						cin >> yesi;
+						yesi = Input::readYesNo("도전하시겠습니까 ? \n선택(y / n) : ");
 					}
 					if (yesi == 'y')
 						randi = 0;
@@ -545,8 +536,7 @@ void Run::pcturn(int self)
 								randi2 = prob(5); //20% 확률로 방해
 						}
 						else {
-							cout << "플레이어가 암살을 당하려고 합니다. 방해합니까? (y/n)\n";
-							cin >> yesi;
+							yesi = Input::readYesNo("플레이어가 암살을 당하려고 합니다. 방해합니까? (y/n)\n");
 							if (yesi == 'y')
 								randi2 = 1;
 							else randi2 = 0;
@@ -590,8 +580,7 @@ void Run::pcturn(int self)
 					cout << "컴퓨터" << self << "가 사령관 카드가 있다고 주장합니다.\n";
 					yesi = 'n';
 					if (!plr[0].dead()) { //죽은플레이어 스킵
-						cout << "도전하시겠습니까 ? \n선택(y / n) : ";
-						cin >> yesi;
+						yesi = Input::readYesNo("도전하시겠습니까 ? \n선택(y / n) : ");
 					}
 
 					if (yesi == 'y')
@@ -615,8 +604,7 @@ void Run::pcturn(int self)
 								randi2 = !prob(5); //20% 확률로 방해
 						}
 						else {
-							cout << "플레이어가 강탈을 당하려고 합니다. 방해합니까? (y/n)\n";
-							cin >> yesi;
+							yesi = Input::readYesNo("플레이어가 강탈을 당하려고 합니다. 방해합니까? (y/n)\n");
 							if (yesi == 'y')
 								randi2 = 1;
 							else randi2 = 0;
@@ -668,4 +656,3 @@ void Run::pcturn(int self)
 		<< plr[self].coins() << "개. 턴이 넘어갑니다.\n";
 	return;
 }
-

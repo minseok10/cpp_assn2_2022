@@ -1,4 +1,5 @@
 #include "Player.h"
+#include "Input.h"
 #include <cstdlib>
 #include <iostream>
 
@@ -80,8 +81,7 @@ void Player::coup(Player (& plr)[4]) {
 	int cou;
 	if (!type) { //플레이어 인간
 		do {
-			cout << "누구에게 쿠를 시도하시겠습니까?\n선택 : ";
-			cin >> cou;
+			cou = Input::readInt("누구에게 쿠를 시도하시겠습니까?\n선택 : ");
 			if (cou < 1 || cou > 3) {
 				cout << "1~3번 컴퓨터 중에서 다시 선택하세요.\n";
 				continue;
@@ -128,5 +128,4 @@ int Player::botherwonjo() {
 		a = 0;
 	return a;
 } //방해 여부 리턴
-
 
