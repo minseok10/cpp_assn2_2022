@@ -45,6 +45,12 @@ jobs:
         if: runner.os == 'macOS'
         run: macdeployqt build/resistance_coup_gui.app -qmldir="$PWD/qml" -verbose=1
 
+      - name: Ad hoc sign macOS app
+        if: runner.os == 'macOS'
+        run: |
+          codesign --force --deep --sign - build/resistance_coup_gui.app
+          codesign --verify --deep --strict --verbose=2 build/resistance_coup_gui.app
+
       - name: Package macOS app
         if: runner.os == 'macOS'
         run: ditto -c -k --keepParent build/resistance_coup_gui.app "${{ matrix.package_name }}"
