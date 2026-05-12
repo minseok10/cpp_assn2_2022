@@ -35,7 +35,7 @@ Item {
             color: "#52606d"
         }
 
-        Button {
+        BorderedButton {
             text: "Start"
             Layout.alignment: Qt.AlignHCenter
             implicitWidth: 180

@@ -28,7 +28,7 @@ Item {
                 color: "#1f2933"
             }
 
-            Button {
+            BorderedButton {
                 text: "Back"
                 implicitWidth: 96
                 onClicked: root.backRequested()
@@ -137,70 +137,25 @@ Item {
                         anchors.margins: 14
                         spacing: 10
 
-                        Rectangle {
-                            Layout.fillWidth: true
-                            Layout.preferredHeight: gameController.waitingForHuman ? 54 : 0
-                            visible: gameController.waitingForHuman
-                            radius: 6
-                            border.color: "#f0b429"
-                            color: "#fffbea"
-
-                            RowLayout {
-                                anchors.fill: parent
-                                anchors.margins: 10
-                                spacing: 8
-
-                                Label {
-                                    text: gameController.pendingPrompt
-                                    Layout.fillWidth: true
-                                    wrapMode: Text.WordWrap
-                                    font.pixelSize: 13
-                                    color: "#513c06"
-                                }
-
-                                Button {
-                                    text: "Yes"
-                                    implicitWidth: 70
-                                    onClicked: {
-                                        if (gameController.pendingType === "challenge")
-                                            gameController.answerChallenge(true)
-                                        else
-                                            gameController.answerCounter(true)
-                                    }
-                                }
-
-                                Button {
-                                    text: "No"
-                                    implicitWidth: 70
-                                    onClicked: {
-                                        if (gameController.pendingType === "challenge")
-                                            gameController.answerChallenge(false)
-                                        else
-                                            gameController.answerCounter(false)
-                                    }
-                                }
-                            }
-                        }
-
                         RowLayout {
                             Layout.fillWidth: true
                             spacing: 10
 
-                            Button {
+                            BorderedButton {
                                 text: "Income"
                                 enabled: gameController.humanTurn && gameController.canTax
                                 Layout.fillWidth: true
                                 onClicked: gameController.performIncome()
                             }
 
-                            Button {
+                            BorderedButton {
                                 text: "Foreign Aid"
                                 enabled: gameController.humanTurn && gameController.canTax
                                 Layout.fillWidth: true
                                 onClicked: gameController.performForeignAid()
                             }
 
-                            Button {
+                            BorderedButton {
                                 text: "Duke Tax"
                                 enabled: gameController.canTax
                                 Layout.fillWidth: true
@@ -221,7 +176,7 @@ Item {
                             Repeater {
                                 model: gameController.players
 
-                                Button {
+                                BorderedButton {
                                     required property var modelData
 
                                     visible: !modelData.human
@@ -246,7 +201,7 @@ Item {
                             Repeater {
                                 model: gameController.players
 
-                                Button {
+                                BorderedButton {
                                     required property var modelData
 
                                     visible: !modelData.human
@@ -271,7 +226,7 @@ Item {
                             Repeater {
                                 model: gameController.players
 
-                                Button {
+                                BorderedButton {
                                     required property var modelData
 
                                     visible: !modelData.human
@@ -287,7 +242,7 @@ Item {
                             Layout.fillWidth: true
                             spacing: 8
 
-                            Button {
+                            BorderedButton {
                                 text: "Exchange"
                                 enabled: false
                                 Layout.fillWidth: true
@@ -336,6 +291,58 @@ Item {
                             color: "#52606d"
                         }
                     }
+                }
+            }
+        }
+    }
+
+    Rectangle {
+        id: pendingDecisionPanel
+        visible: gameController.waitingForHuman
+        z: 10
+        width: Math.min(root.width - 56, 520)
+        height: Math.max(92, decisionLayout.implicitHeight + 24)
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: 28
+        radius: 8
+        border.width: 1
+        border.color: "#d69e2e"
+        color: "#fffbea"
+
+        RowLayout {
+            id: decisionLayout
+            anchors.fill: parent
+            anchors.margins: 12
+            spacing: 10
+
+            Label {
+                text: gameController.pendingPrompt
+                Layout.fillWidth: true
+                wrapMode: Text.WordWrap
+                font.pixelSize: 13
+                color: "#513c06"
+            }
+
+            BorderedButton {
+                text: "Yes"
+                implicitWidth: 70
+                onClicked: {
+                    if (gameController.pendingType === "challenge")
+                        gameController.answerChallenge(true)
+                    else
+                        gameController.answerCounter(true)
+                }
+            }
+
+            BorderedButton {
+                text: "No"
+                implicitWidth: 70
+                onClicked: {
+                    if (gameController.pendingType === "challenge")
+                        gameController.answerChallenge(false)
+                    else
+                        gameController.answerCounter(false)
                 }
             }
         }
