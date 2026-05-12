@@ -46,6 +46,15 @@ open build-qt/resistance_coup_gui.app
 ./build-qt/resistance_coup_gui.app/Contents/MacOS/resistance_coup_gui
 ```
 
+## 릴리스 방법
+
+`v`로 시작하는 태그를 GitHub에 push하면 GitHub Actions가 macOS와 Windows 버전을 빌드하고, 두 zip 파일을 GitHub Release asset으로 업로드합니다.
+
+```bash
+git tag v0.1.0
+git push origin v0.1.0
+```
+
 ## 콘솔 버전 빌드 방법
 
 별도의 `console` 브랜치는 없습니다. 현재 브랜치에 기존 콘솔 진입점과 `Makefile`이 남아 있으므로, 필요하면 아래 명령으로 콘솔 실행 파일을 빌드할 수 있습니다.

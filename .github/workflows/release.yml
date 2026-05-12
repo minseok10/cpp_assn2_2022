@@ -1,0 +1,103 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Build ${{ matrix.name }}
+    runs-on: ${{ matrix.runner }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: macOS
+            runner: macos-latest
+            artifact_name: ResistanceCoup-macOS
+            package_name: ResistanceCoup-macOS.zip
+          - name: Windows
+            runner: windows-latest
+            artifact_name: ResistanceCoup-Windows
+            package_name: ResistanceCoup-Windows.zip
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v5
+
+      - name: Install Qt
+        uses: jurplel/install-qt-action@v4
+        with:
+          version: "6.7.3"
+
+      - name: Configure
+        run: cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
+
+      - name: Build
+        run: cmake --build build --config Release
+
+      - name: Deploy Qt runtime on macOS
+        if: runner.os == 'macOS'
+        run: macdeployqt build/resistance_coup_gui.app -qmldir="$PWD/qml" -verbose=1
+
+      - name: Package macOS app
+        if: runner.os == 'macOS'
+        run: ditto -c -k --keepParent build/resistance_coup_gui.app "${{ matrix.package_name }}"
+
+      - name: Deploy Qt runtime on Windows
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force package/ResistanceCoup | Out-Null
+          $exe = Get-ChildItem build -Recurse -Filter resistance_coup_gui.exe |
+            Where-Object { $_.FullName -notmatch 'CMakeFiles' } |
+            Select-Object -First 1
+          if (-not $exe) {
+            throw "resistance_coup_gui.exe was not found"
+          }
+          Copy-Item $exe.FullName package/ResistanceCoup/
+          windeployqt --release --qmldir "$env:GITHUB_WORKSPACE/qml" package/ResistanceCoup/resistance_coup_gui.exe
+
+      - name: Package Windows app
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: Compress-Archive -Path package/ResistanceCoup -DestinationPath "${{ matrix.package_name }}"
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.artifact_name }}
+          path: ${{ matrix.package_name }}
+          if-no-files-found: error
+
+  release:
+    name: Create GitHub release
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+          merge-multiple: true
+
+      - name: Create release and upload assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: |
+          if ! gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
+            gh release create "$RELEASE_TAG" \
+              --title "Resistance Coup $RELEASE_TAG" \
+              --notes "Automated macOS and Windows builds for $RELEASE_TAG." \
+              --verify-tag
+          fi
+
+          mapfile -d '' assets < <(find artifacts -type f -name '*.zip' -print0)
+          gh release upload "$RELEASE_TAG" "${assets[@]}" --clobber
