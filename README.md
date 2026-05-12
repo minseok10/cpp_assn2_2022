@@ -4,9 +4,11 @@
 
 최신 GUI 버전은 `main` 브랜치에 둡니다. 콘솔 버전 코드는 현재 브랜치에도 함께 남아 있으며, 최초 손코딩 버전은 `original` 브랜치에 보존합니다.
 
-## Screenshot
+## Screenshots
 
-![Resistance Coup GUI screenshot](screenshot.png)
+![Resistance Coup GUI player turn](screenshot-player-turn.png)
+
+![Resistance Coup GUI challenge dialog](screenshot-challenge-dialog.png)
 
 ## 과제 배경
 
