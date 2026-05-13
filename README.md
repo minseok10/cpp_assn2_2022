@@ -12,7 +12,7 @@
 
 ## 과제 배경
 
-보고서([문서2.docx](문서2.docx))에 따르면 이 과제의 목표는 C++ class를 활용하여 객체지향 프로그래밍 구조를 익히는 것입니다. 상속은 사용하지 않고, 게임에 필요한 역할을 여러 클래스로 분리했습니다.
+이 저장소에는 과제 자료로 [문서2.docx](문서2.docx)와 [Assignment2.pdf](Assignment2.pdf)를 함께 보관합니다. `문서2.docx`는 과제 수행 후 직접 작성한 보고서이고, `Assignment2.pdf`는 과제 요구사항과 안내가 담긴 공고 문서입니다. 보고서에 따르면 이 과제의 목표는 C++ class를 활용하여 객체지향 프로그래밍 구조를 익히는 것입니다. 상속은 사용하지 않고, 게임에 필요한 역할을 여러 클래스로 분리했습니다.
 
 구현 대상은 보드게임 `Resistance Coup`의 간소화 버전입니다. 현재 버전은 Qt6 + QML GUI에서 플레이할 수 있으며, 핵심 게임 규칙은 Qt에 의존하지 않는 순수 C++ 로직으로 유지합니다. 컴퓨터 플레이어는 죽은 참가자를 공격하지 않는 기본 판단과 확률 기반 선택을 사용합니다.
 
@@ -85,6 +85,7 @@ make
 - `Prtstr.h`, `Prtstr.cpp`: 메뉴와 설명서 문자열 출력
 - `randoms.h`, `randoms.cpp`: 난수 보조 함수
 - `문서2.docx`: 2022년 과제 보고서 원본
+- `Assignment2.pdf`: 2022년 과제 공고 원본
 
 ## 브랜치 설명
 
@@ -110,4 +111,4 @@ make
 ## 참고
 
 - `문서2.docx`: Object-Oriented Programming Assignment #2 Resistance Coup 보고서
-- 김정헌, `Assignment2.pdf`, Flow chart, 2022
+- `Assignment2.pdf`: Object-Oriented Programming Assignment #2 과제 공고
