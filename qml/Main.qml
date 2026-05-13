@@ -39,7 +39,7 @@ ApplicationWindow {
         implicitHeight: 38
         anchors.top: parent.top
         anchors.right: parent.right
-        anchors.topMargin: 18
+        anchors.topMargin: 28
         anchors.rightMargin: 18
         ToolTip.visible: hovered
         ToolTip.text: "게임 설명"
