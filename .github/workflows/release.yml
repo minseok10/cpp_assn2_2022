@@ -12,6 +12,9 @@ jobs:
   build:
     name: Build ${{ matrix.name }}
     runs-on: ${{ matrix.runner }}
+    env:
+      ARTIFACT_NAME: ResistanceCoup-${{ github.ref_name }}-${{ matrix.package_suffix }}
+      PACKAGE_NAME: ResistanceCoup-${{ github.ref_name }}-${{ matrix.package_suffix }}.zip
 
     strategy:
       fail-fast: false
@@ -19,20 +22,17 @@ jobs:
         include:
           - name: macOS arm64
             runner: macos-latest
-            artifact_name: ResistanceCoup-macOS-arm64
-            package_name: ResistanceCoup-macOS-arm64.zip
+            package_suffix: macOS-arm64
             qt_arch: clang_64
             cmake_args: -DCMAKE_OSX_ARCHITECTURES=arm64
           - name: Windows x64
             runner: windows-latest
-            artifact_name: ResistanceCoup-Windows-x64
-            package_name: ResistanceCoup-Windows-x64.zip
+            package_suffix: Windows-x64
             qt_arch: win64_msvc2022_64
             cmake_args: -A x64
           - name: Windows arm64
             runner: windows-11-arm
-            artifact_name: ResistanceCoup-Windows-arm64
-            package_name: ResistanceCoup-Windows-arm64.zip
+            package_suffix: Windows-arm64
             qt_arch: win64_msvc2022_arm64
             cmake_args: -A ARM64
 
@@ -64,7 +64,7 @@ jobs:
 
       - name: Package macOS app
         if: runner.os == 'macOS'
-        run: ditto -c -k --keepParent build/resistance_coup_gui.app "${{ matrix.package_name }}"
+        run: ditto -c -k --keepParent build/resistance_coup_gui.app "$PACKAGE_NAME"
 
       - name: Deploy Qt runtime on Windows
         if: runner.os == 'Windows'
@@ -83,13 +83,13 @@ jobs:
       - name: Package Windows app
         if: runner.os == 'Windows'
         shell: pwsh
-        run: Compress-Archive -Path package/ResistanceCoup -DestinationPath "${{ matrix.package_name }}"
+        run: Compress-Archive -Path package/ResistanceCoup -DestinationPath "$env:PACKAGE_NAME"
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v7
         with:
-          name: ${{ matrix.artifact_name }}
-          path: ${{ matrix.package_name }}
+          name: ${{ env.ARTIFACT_NAME }}
+          path: ${{ env.PACKAGE_NAME }}
           if-no-files-found: error
 
   release:
