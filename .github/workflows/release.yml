@@ -17,26 +17,37 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - name: macOS
+          - name: macOS arm64
             runner: macos-latest
-            artifact_name: ResistanceCoup-macOS
-            package_name: ResistanceCoup-macOS.zip
-          - name: Windows
+            artifact_name: ResistanceCoup-macOS-arm64
+            package_name: ResistanceCoup-macOS-arm64.zip
+            qt_arch: clang_64
+            cmake_args: -DCMAKE_OSX_ARCHITECTURES=arm64
+          - name: Windows x64
             runner: windows-latest
-            artifact_name: ResistanceCoup-Windows
-            package_name: ResistanceCoup-Windows.zip
+            artifact_name: ResistanceCoup-Windows-x64
+            package_name: ResistanceCoup-Windows-x64.zip
+            qt_arch: win64_msvc2022_64
+            cmake_args: -A x64
+          - name: Windows arm64
+            runner: windows-11-arm
+            artifact_name: ResistanceCoup-Windows-arm64
+            package_name: ResistanceCoup-Windows-arm64.zip
+            qt_arch: win64_msvc2022_arm64
+            cmake_args: -A ARM64
 
     steps:
       - name: Check out repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Install Qt
         uses: jurplel/install-qt-action@v4
         with:
-          version: "6.7.3"
+          version: "6.8.3"
+          arch: ${{ matrix.qt_arch }}
 
       - name: Configure
-        run: cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
+        run: cmake -S . -B build -DCMAKE_BUILD_TYPE=Release ${{ matrix.cmake_args }}
 
       - name: Build
         run: cmake --build build --config Release
@@ -75,7 +86,7 @@ jobs:
         run: Compress-Archive -Path package/ResistanceCoup -DestinationPath "${{ matrix.package_name }}"
 
       - name: Upload build artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: ${{ matrix.artifact_name }}
           path: ${{ matrix.package_name }}
@@ -88,10 +99,10 @@ jobs:
 
     steps:
       - name: Check out repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Download build artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           path: artifacts
           merge-multiple: true
@@ -104,7 +115,7 @@ jobs:
           if ! gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
             gh release create "$RELEASE_TAG" \
               --title "Resistance Coup $RELEASE_TAG" \
-              --notes "Automated macOS and Windows builds for $RELEASE_TAG." \
+              --notes "Automated macOS arm64 and Windows x64/arm64 builds for $RELEASE_TAG." \
               --verify-tag
           fi
 
