@@ -33,6 +33,10 @@ Item {
                 implicitWidth: 96
                 onClicked: root.backRequested()
             }
+
+            Item {
+                Layout.preferredWidth: 44
+            }
         }
 
         Label {

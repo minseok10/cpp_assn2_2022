@@ -31,6 +31,26 @@ ApplicationWindow {
         sourceComponent: gameController.screen === "game" ? gameScreen : startScreen
     }
 
+    BorderedButton {
+        id: personalGuideButton
+        z: 20
+        text: "?"
+        implicitWidth: 38
+        implicitHeight: 38
+        anchors.top: parent.top
+        anchors.right: parent.right
+        anchors.topMargin: 18
+        anchors.rightMargin: 18
+        ToolTip.visible: hovered
+        ToolTip.text: "게임 설명"
+        onClicked: personalGuidePopup.open()
+    }
+
+    PersonalGuidePopup {
+        id: personalGuidePopup
+        z: 30
+    }
+
     Component {
         id: startScreen
 

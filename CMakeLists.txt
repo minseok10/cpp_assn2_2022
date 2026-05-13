@@ -59,6 +59,7 @@ qt_add_qml_module(resistance_coup_gui
         qml/StartScreen.qml
         qml/GameScreen.qml
         qml/BorderedButton.qml
+        qml/PersonalGuidePopup.qml
 )
 
 install(TARGETS resistance_coup_gui
