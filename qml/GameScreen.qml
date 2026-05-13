@@ -29,7 +29,7 @@ Item {
             }
 
             BorderedButton {
-                text: "Back"
+                text: "뒤로"
                 implicitWidth: 96
                 onClicked: root.backRequested()
             }
@@ -93,7 +93,7 @@ Item {
                                     }
 
                                     Label {
-                                        text: modelData.dead ? "Out" : modelData.coins + " coins"
+                                        text: modelData.dead ? "탈락" : "코인 " + modelData.coins + "개"
                                         font.pixelSize: 14
                                         color: modelData.dead ? "#9aa5b1" : "#52606d"
                                     }
@@ -146,21 +146,21 @@ Item {
                             spacing: 10
 
                             BorderedButton {
-                                text: "Income"
+                                text: "소득"
                                 enabled: gameController.humanTurn && gameController.canTax
                                 Layout.fillWidth: true
                                 onClicked: gameController.performIncome()
                             }
 
                             BorderedButton {
-                                text: "Foreign Aid"
+                                text: "해외 원조"
                                 enabled: gameController.humanTurn && gameController.canTax
                                 Layout.fillWidth: true
                                 onClicked: gameController.performForeignAid()
                             }
 
                             BorderedButton {
-                                text: "Duke Tax"
+                                text: "공작 세금"
                                 enabled: gameController.canTax
                                 Layout.fillWidth: true
                                 onClicked: gameController.performTax()
@@ -172,7 +172,7 @@ Item {
                             spacing: 8
 
                             Label {
-                                text: "Coup"
+                                text: "쿠"
                                 font.pixelSize: 14
                                 color: "#52606d"
                             }
@@ -197,7 +197,7 @@ Item {
                             spacing: 8
 
                             Label {
-                                text: "Assassinate"
+                                text: "암살"
                                 font.pixelSize: 14
                                 color: "#52606d"
                             }
@@ -222,7 +222,7 @@ Item {
                             spacing: 8
 
                             Label {
-                                text: "Steal"
+                                text: "강탈"
                                 font.pixelSize: 14
                                 color: "#52606d"
                             }
@@ -247,7 +247,7 @@ Item {
                             spacing: 8
 
                             BorderedButton {
-                                text: "Exchange"
+                                text: "교환"
                                 enabled: false
                                 Layout.fillWidth: true
                             }
@@ -269,7 +269,7 @@ Item {
                     spacing: 10
 
                     Label {
-                        text: "Log"
+                        text: "기록"
                         Layout.fillWidth: true
                         font.pixelSize: 18
                         font.bold: true
@@ -329,7 +329,7 @@ Item {
             }
 
             BorderedButton {
-                text: "Yes"
+                text: "예"
                 implicitWidth: 70
                 onClicked: {
                     if (gameController.pendingType === "challenge")
@@ -340,7 +340,7 @@ Item {
             }
 
             BorderedButton {
-                text: "No"
+                text: "아니오"
                 implicitWidth: 70
                 onClicked: {
                     if (gameController.pendingType === "challenge")

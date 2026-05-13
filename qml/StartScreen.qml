@@ -18,7 +18,7 @@ Item {
         spacing: 24
 
         Label {
-            text: "Resistance: Coup"
+            text: "레지스탕스 쿠"
             Layout.fillWidth: true
             horizontalAlignment: Text.AlignHCenter
             font.pixelSize: 44
@@ -36,7 +36,7 @@ Item {
         }
 
         BorderedButton {
-            text: "Start"
+            text: "시작"
             Layout.alignment: Qt.AlignHCenter
             implicitWidth: 180
             implicitHeight: 44

@@ -24,7 +24,7 @@ void GameEngine::start()
 	m_currentPlayer = 0;
 	m_state.gameStarted = true;
 	dealCards();
-	appendLog("New game started.");
+	appendLog("새 게임을 시작했습니다.");
 	rebuildState();
 }
 
@@ -40,7 +40,7 @@ bool GameEngine::income()
 	}
 
 	m_players[0].coinplus(1);
-	appendLog("Player gains 1 coin from Income.");
+	appendLog("플레이어가 소득으로 코인 1개를 얻었습니다.");
 	finishHumanAction();
 	return true;
 }
@@ -51,11 +51,11 @@ bool GameEngine::foreignAid()
 		return false;
 	}
 
-	appendLog("Player chooses Foreign Aid.");
+	appendLog("플레이어가 해외 원조를 선택했습니다.");
 	int blocker = findPlayerForeignAidBlocker(0);
 	if (blocker == 0) {
 		m_players[0].coinplus(2);
-		appendLog("No one blocks Foreign Aid. Player gains 2 coins.");
+		appendLog("아무도 해외 원조를 막지 않았습니다. 플레이어가 코인 2개를 얻었습니다.");
 		finishHumanAction();
 	}
 	else {
@@ -101,9 +101,9 @@ bool GameEngine::coup(int target)
 	}
 
 	bool defeated = m_players[0].coup(target, m_players);
-	appendLog("Player launches a Coup against Computer " + std::to_string(target) + ".");
+	appendLog("플레이어가 컴퓨터 " + std::to_string(target) + "에게 쿠를 시도했습니다.");
 	if (defeated) {
-		appendLog("Computer " + std::to_string(target) + " is eliminated.");
+		appendLog("컴퓨터 " + std::to_string(target) + "이 탈락했습니다.");
 	}
 	finishHumanAction();
 	return true;
@@ -142,7 +142,7 @@ bool GameEngine::answerChallenge(bool challenge)
 		}
 		else {
 			clearPending();
-			appendLog("Player does not challenge the block. " + actionName(pending.action) + " is blocked.");
+			appendLog("플레이어가 방해에 도전하지 않았습니다. " + actionName(pending.action) + "이 막혔습니다.");
 			finishHumanAction();
 		}
 		rebuildState();
@@ -286,13 +286,13 @@ void GameEngine::runComputerTurns()
 void GameEngine::runComputerAction()
 {
 	int actor = m_currentPlayer;
-	appendLog(playerName(actor) + "'s turn.");
+	appendLog(playerName(actor) + " 차례입니다.");
 	if (mustCoup(actor)) {
 		int target = findComputerActionTarget(actor);
 		bool defeated = m_players[actor].coup(target, m_players);
-		appendLog(playerName(actor) + " must Coup and targets " + playerName(target) + ".");
+		appendLog(playerName(actor) + "은 코인이 10개 이상이라 " + playerName(target) + "에게 반드시 쿠를 해야 합니다.");
 		if (defeated) {
-			appendLog(playerName(target) + " is eliminated.");
+			appendLog(playerName(target) + "이 탈락했습니다.");
 		}
 		return;
 	}
@@ -301,7 +301,7 @@ void GameEngine::runComputerAction()
 		int choice = m_players[actor].coins() > 6 ? prob(3) + 1 : prob(2) + 1;
 		if (choice == 1) {
 			m_players[actor].coinplus(1);
-			appendLog(playerName(actor) + " gains 1 coin from Income.");
+			appendLog(playerName(actor) + "이 소득으로 코인 1개를 얻었습니다.");
 		}
 		else if (choice == 2) {
 			startComputerForeignAid();
@@ -309,9 +309,9 @@ void GameEngine::runComputerAction()
 		else {
 			int target = findComputerActionTarget(actor);
 			bool defeated = m_players[actor].coup(target, m_players);
-			appendLog(playerName(actor) + " launches a Coup against " + playerName(target) + ".");
+			appendLog(playerName(actor) + "이 " + playerName(target) + "에게 쿠를 시도했습니다.");
 			if (defeated) {
-				appendLog(playerName(target) + " is eliminated.");
+				appendLog(playerName(target) + "이 탈락했습니다.");
 			}
 		}
 		return;
@@ -335,7 +335,7 @@ void GameEngine::runComputerAction()
 
 void GameEngine::startPlayerClaim(ActionKind action, int target, int card)
 {
-	appendLog("Player claims " + cardName(card) + " for " + actionName(action) + ".");
+	appendLog("플레이어가 " + actionName(action) + "을 위해 " + cardName(card) + "을 주장했습니다.");
 	int challenger = findRandomChallenger(0);
 	if (challenger != 0) {
 		bool honest = resolveChallenge(0, card, challenger);
@@ -345,7 +345,7 @@ void GameEngine::startPlayerClaim(ActionKind action, int target, int card)
 		}
 	}
 	else {
-		appendLog("No one challenges Player.");
+		appendLog("아무도 플레이어에게 도전하지 않았습니다.");
 	}
 
 	continuePlayerAction(action, target);
@@ -355,7 +355,7 @@ void GameEngine::continuePlayerAction(ActionKind action, int target)
 {
 	if (action == ActionKind::Tax) {
 		m_players[0].coinplus(3);
-		appendLog("Player gains 3 coins from Duke.");
+		appendLog("플레이어가 공작으로 코인 3개를 얻었습니다.");
 		finishHumanAction();
 		return;
 	}
@@ -368,9 +368,9 @@ void GameEngine::continuePlayerAction(ActionKind action, int target)
 		else {
 			bool defeated = openRandomCard(target);
 			m_players[0].coinplus(-3);
-			appendLog("Player assassinates Computer " + std::to_string(target) + ".");
+			appendLog("플레이어가 컴퓨터 " + std::to_string(target) + "을 암살했습니다.");
 			if (defeated) {
-				appendLog("Computer " + std::to_string(target) + " is eliminated.");
+				appendLog("컴퓨터 " + std::to_string(target) + "이 탈락했습니다.");
 			}
 			finishHumanAction();
 		}
@@ -385,7 +385,7 @@ void GameEngine::continuePlayerAction(ActionKind action, int target)
 		else {
 			int taken = m_players[target].takeCoins(2);
 			m_players[0].coinplus(taken);
-			appendLog("Player steals " + std::to_string(taken) + " coins from Computer " + std::to_string(target) + ".");
+			appendLog("플레이어가 컴퓨터 " + std::to_string(target) + "에게서 코인 " + std::to_string(taken) + "개를 강탈했습니다.");
 			finishHumanAction();
 		}
 		return;
@@ -393,14 +393,14 @@ void GameEngine::continuePlayerAction(ActionKind action, int target)
 
 	if (action == ActionKind::ForeignAid) {
 		m_players[0].coinplus(2);
-		appendLog("Player gains 2 coins from Foreign Aid.");
+		appendLog("플레이어가 해외 원조로 코인 2개를 얻었습니다.");
 		finishHumanAction();
 	}
 }
 
 void GameEngine::blockPlayerAction(ActionKind action, int blocker, int card)
 {
-	appendLog(playerName(blocker) + " blocks Player's " + actionName(action) + " with " + cardName(card) + ".");
+	appendLog(playerName(blocker) + "이 " + cardName(card) + "으로 플레이어의 " + actionName(action) + "을 막았습니다.");
 	setPending(
 		PendingType::ChallengeBlock,
 		action,
@@ -408,7 +408,7 @@ void GameEngine::blockPlayerAction(ActionKind action, int blocker, int card)
 		action == ActionKind::ForeignAid ? -1 : blocker,
 		blocker,
 		card,
-		"Challenge " + playerName(blocker) + "'s " + cardName(card) + " block?");
+		playerName(blocker) + "의 " + cardName(card) + " 방해에 도전하시겠습니까?");
 	rebuildState();
 }
 
@@ -417,19 +417,19 @@ void GameEngine::resolveBlockedPlayerAction(bool blockHonest)
 	PendingDecision pending = m_pending;
 	clearPending();
 	if (blockHonest) {
-		appendLog(playerName(pending.blocker) + "'s block succeeds. " + actionName(pending.action) + " fails.");
+		appendLog(playerName(pending.blocker) + "의 방해가 성공했습니다. " + actionName(pending.action) + "은 실패했습니다.");
 		finishHumanAction();
 		return;
 	}
 
-	appendLog(playerName(pending.blocker) + "'s block fails.");
+	appendLog(playerName(pending.blocker) + "의 방해가 실패했습니다.");
 	continuePlayerAction(pending.action, pending.target);
 }
 
 void GameEngine::startComputerClaim(ActionKind action, int target, int card)
 {
 	int actor = m_currentPlayer;
-	appendLog(playerName(actor) + " claims " + cardName(card) + " for " + actionName(action) + ".");
+	appendLog(playerName(actor) + "이 " + actionName(action) + "을 위해 " + cardName(card) + "을 주장했습니다.");
 	if (!m_players[0].dead()) {
 		setPending(
 			PendingType::ChallengeClaim,
@@ -438,7 +438,7 @@ void GameEngine::startComputerClaim(ActionKind action, int target, int card)
 			target,
 			-1,
 			card,
-			"Challenge " + playerName(actor) + "'s " + cardName(card) + " claim?");
+			playerName(actor) + "의 " + cardName(card) + " 주장에 도전하시겠습니까?");
 		rebuildState();
 		return;
 	}
@@ -460,7 +460,7 @@ void GameEngine::continueComputerClaimAfterHumanPass()
 		}
 	}
 	else {
-		appendLog("No one challenges " + playerName(pending.actor) + ".");
+		appendLog("아무도 " + playerName(pending.actor) + "에게 도전하지 않았습니다.");
 	}
 
 	continueComputerAction(pending.action, pending.target);
@@ -471,7 +471,7 @@ void GameEngine::continueComputerAction(ActionKind action, int target)
 	int actor = m_currentPlayer;
 	if (action == ActionKind::Tax) {
 		m_players[actor].coinplus(3);
-		appendLog(playerName(actor) + " gains 3 coins from Duke.");
+		appendLog(playerName(actor) + "이 공작으로 코인 3개를 얻었습니다.");
 		finishComputerAction();
 		return;
 	}
@@ -485,30 +485,30 @@ void GameEngine::continueComputerAction(ActionKind action, int target)
 				target,
 				0,
 				3,
-				"Block " + playerName(actor) + "'s assassination with Contessa?");
+				playerName(actor) + "의 암살을 백작부인으로 막으시겠습니까?");
 			rebuildState();
 			return;
 		}
 
 		bool block = m_players[target].cardhave(3) || !prob(5);
 		if (block) {
-			appendLog(playerName(target) + " blocks assassination with Contessa.");
+			appendLog(playerName(target) + "이 백작부인으로 암살을 막았습니다.");
 			if (!prob(5)) {
 				bool honest = resolveChallenge(target, 3, actor);
 				if (!honest) {
 					bool defeated = openRandomCard(target);
 					m_players[actor].coinplus(-3);
-					appendLog(playerName(actor) + " assassinates " + playerName(target) + ".");
+					appendLog(playerName(actor) + "이 " + playerName(target) + "을 암살했습니다.");
 					if (defeated) {
-						appendLog(playerName(target) + " is eliminated.");
+						appendLog(playerName(target) + "이 탈락했습니다.");
 					}
 				}
 				else {
-					appendLog("Assassination is blocked.");
+					appendLog("암살이 막혔습니다.");
 				}
 			}
 			else {
-				appendLog(playerName(actor) + " does not challenge. Assassination is blocked.");
+				appendLog(playerName(actor) + "이 도전하지 않았습니다. 암살이 막혔습니다.");
 			}
 			finishComputerAction();
 			return;
@@ -516,9 +516,9 @@ void GameEngine::continueComputerAction(ActionKind action, int target)
 
 		bool defeated = openRandomCard(target);
 		m_players[actor].coinplus(-3);
-		appendLog(playerName(actor) + " assassinates " + playerName(target) + ".");
+		appendLog(playerName(actor) + "이 " + playerName(target) + "을 암살했습니다.");
 		if (defeated) {
-			appendLog(playerName(target) + " is eliminated.");
+			appendLog(playerName(target) + "이 탈락했습니다.");
 		}
 		finishComputerAction();
 		return;
@@ -533,27 +533,27 @@ void GameEngine::continueComputerAction(ActionKind action, int target)
 				target,
 				0,
 				2,
-				"Block " + playerName(actor) + "'s steal with Captain?");
+				playerName(actor) + "의 강탈을 사령관으로 막으시겠습니까?");
 			rebuildState();
 			return;
 		}
 
 		bool block = m_players[target].cardhave(2) || !prob(5);
 		if (block) {
-			appendLog(playerName(target) + " blocks steal with Captain.");
+			appendLog(playerName(target) + "이 사령관으로 강탈을 막았습니다.");
 			if (!prob(5)) {
 				bool honest = resolveChallenge(target, 2, actor);
 				if (!honest) {
 					int taken = m_players[target].takeCoins(2);
 					m_players[actor].coinplus(taken);
-					appendLog(playerName(actor) + " steals " + std::to_string(taken) + " coins from " + playerName(target) + ".");
+					appendLog(playerName(actor) + "이 " + playerName(target) + "에게서 코인 " + std::to_string(taken) + "개를 강탈했습니다.");
 				}
 				else {
-					appendLog("Steal is blocked.");
+					appendLog("강탈이 막혔습니다.");
 				}
 			}
 			else {
-				appendLog(playerName(actor) + " does not challenge. Steal is blocked.");
+				appendLog(playerName(actor) + "이 도전하지 않았습니다. 강탈이 막혔습니다.");
 			}
 			finishComputerAction();
 			return;
@@ -561,7 +561,7 @@ void GameEngine::continueComputerAction(ActionKind action, int target)
 
 		int taken = m_players[target].takeCoins(2);
 		m_players[actor].coinplus(taken);
-		appendLog(playerName(actor) + " steals " + std::to_string(taken) + " coins from " + playerName(target) + ".");
+		appendLog(playerName(actor) + "이 " + playerName(target) + "에게서 코인 " + std::to_string(taken) + "개를 강탈했습니다.");
 		finishComputerAction();
 	}
 }
@@ -569,7 +569,7 @@ void GameEngine::continueComputerAction(ActionKind action, int target)
 void GameEngine::startComputerForeignAid()
 {
 	int actor = m_currentPlayer;
-	appendLog(playerName(actor) + " chooses Foreign Aid.");
+	appendLog(playerName(actor) + "이 해외 원조를 선택했습니다.");
 	if (!m_players[0].dead()) {
 		setPending(
 			PendingType::CounterBlock,
@@ -578,7 +578,7 @@ void GameEngine::startComputerForeignAid()
 			-1,
 			0,
 			0,
-			"Block " + playerName(actor) + "'s Foreign Aid with Duke?");
+			playerName(actor) + "의 해외 원조를 공작으로 막으시겠습니까?");
 		rebuildState();
 		return;
 	}
@@ -594,24 +594,24 @@ void GameEngine::continueComputerForeignAidAfterHumanPass()
 	int blocker = findPlayerForeignAidBlocker(pending.actor);
 	if (blocker == pending.actor) {
 		m_players[pending.actor].coinplus(2);
-		appendLog("No one blocks Foreign Aid. " + playerName(pending.actor) + " gains 2 coins.");
+		appendLog("아무도 해외 원조를 막지 않았습니다. " + playerName(pending.actor) + "이 코인 2개를 얻었습니다.");
 		finishComputerAction();
 		return;
 	}
 
-	appendLog(playerName(blocker) + " blocks " + playerName(pending.actor) + "'s Foreign Aid with Duke.");
+	appendLog(playerName(blocker) + "이 공작으로 " + playerName(pending.actor) + "의 해외 원조를 막았습니다.");
 	if (!prob(5)) {
 		bool honest = resolveChallenge(blocker, 0, pending.actor);
 		if (!honest) {
 			m_players[pending.actor].coinplus(2);
-			appendLog("Foreign Aid succeeds after the block challenge.");
+			appendLog("방해 도전 이후 해외 원조가 성공했습니다.");
 		}
 		else {
-			appendLog("Foreign Aid is blocked.");
+			appendLog("해외 원조가 막혔습니다.");
 		}
 	}
 	else {
-		appendLog(playerName(pending.actor) + " does not challenge. Foreign Aid is blocked.");
+		appendLog(playerName(pending.actor) + "이 도전하지 않았습니다. 해외 원조가 막혔습니다.");
 	}
 	finishComputerAction();
 }
@@ -620,7 +620,7 @@ void GameEngine::resolveHumanCounter(bool counter)
 {
 	PendingDecision pending = m_pending;
 	if (!counter) {
-		appendLog("Player does not block.");
+		appendLog("플레이어가 막지 않았습니다.");
 		if (pending.action == ActionKind::ForeignAid) {
 			continueComputerForeignAidAfterHumanPass();
 		}
@@ -629,15 +629,15 @@ void GameEngine::resolveHumanCounter(bool counter)
 			if (pending.action == ActionKind::Assassinate) {
 				bool defeated = openRandomCard(pending.target);
 				m_players[pending.actor].coinplus(-3);
-				appendLog(playerName(pending.actor) + " assassinates " + playerName(pending.target) + ".");
+				appendLog(playerName(pending.actor) + "이 " + playerName(pending.target) + "을 암살했습니다.");
 				if (defeated) {
-					appendLog(playerName(pending.target) + " is eliminated.");
+					appendLog(playerName(pending.target) + "이 탈락했습니다.");
 				}
 			}
 			else if (pending.action == ActionKind::Steal) {
 				int taken = m_players[pending.target].takeCoins(2);
 				m_players[pending.actor].coinplus(taken);
-				appendLog(playerName(pending.actor) + " steals " + std::to_string(taken) + " coins from " + playerName(pending.target) + ".");
+				appendLog(playerName(pending.actor) + "이 " + playerName(pending.target) + "에게서 코인 " + std::to_string(taken) + "개를 강탈했습니다.");
 			}
 			finishComputerAction();
 		}
@@ -645,51 +645,51 @@ void GameEngine::resolveHumanCounter(bool counter)
 	}
 
 	clearPending();
-	appendLog("Player blocks " + playerName(pending.actor) + "'s " + actionName(pending.action) + " with " + cardName(pending.card) + ".");
+	appendLog("플레이어가 " + cardName(pending.card) + "으로 " + playerName(pending.actor) + "의 " + actionName(pending.action) + "을 막았습니다.");
 	if (!prob(5)) {
 		bool honest = resolveChallenge(0, pending.card, pending.actor);
 		if (!honest) {
 			if (pending.action == ActionKind::ForeignAid) {
 				m_players[pending.actor].coinplus(2);
-				appendLog("Foreign Aid succeeds after Player's failed block.");
+				appendLog("플레이어의 방해가 실패해 해외 원조가 성공했습니다.");
 			}
 			else {
 				if (pending.action == ActionKind::Assassinate) {
 					bool defeated = openRandomCard(pending.target);
 					m_players[pending.actor].coinplus(-3);
-					appendLog(playerName(pending.actor) + " assassinates " + playerName(pending.target) + ".");
+					appendLog(playerName(pending.actor) + "이 " + playerName(pending.target) + "을 암살했습니다.");
 					if (defeated) {
-						appendLog(playerName(pending.target) + " is eliminated.");
+						appendLog(playerName(pending.target) + "이 탈락했습니다.");
 					}
 				}
 				else if (pending.action == ActionKind::Steal) {
 					int taken = m_players[pending.target].takeCoins(2);
 					m_players[pending.actor].coinplus(taken);
-					appendLog(playerName(pending.actor) + " steals " + std::to_string(taken) + " coins from " + playerName(pending.target) + ".");
+					appendLog(playerName(pending.actor) + "이 " + playerName(pending.target) + "에게서 코인 " + std::to_string(taken) + "개를 강탈했습니다.");
 				}
 			}
 		}
 		else {
-			appendLog(actionName(pending.action) + " is blocked.");
+			appendLog(actionName(pending.action) + "이 막혔습니다.");
 		}
 	}
 	else {
-		appendLog(playerName(pending.actor) + " does not challenge. " + actionName(pending.action) + " is blocked.");
+		appendLog(playerName(pending.actor) + "이 도전하지 않았습니다. " + actionName(pending.action) + "이 막혔습니다.");
 	}
 	finishComputerAction();
 }
 
 bool GameEngine::resolveChallenge(int claimant, int card, int challenger)
 {
-	appendLog(playerName(challenger) + " challenges " + playerName(claimant) + "'s " + cardName(card) + ".");
+	appendLog(playerName(challenger) + "이 " + playerName(claimant) + "의 " + cardName(card) + " 주장에 도전했습니다.");
 	if (m_players[claimant].cardhave(card)) {
-		appendLog("Challenge fails. " + playerName(challenger) + " reveals a card.");
+		appendLog("도전이 실패했습니다. " + playerName(challenger) + "이 카드 1장을 공개합니다.");
 		openRandomCard(challenger);
 		exchangeClaimedCard(claimant, card);
 		return true;
 	}
 
-	appendLog("Challenge succeeds. " + playerName(claimant) + " reveals a card.");
+	appendLog("도전이 성공했습니다. " + playerName(claimant) + "이 카드 1장을 공개합니다.");
 	openRandomCard(claimant);
 	return false;
 }
@@ -698,7 +698,7 @@ bool GameEngine::openRandomCard(int player)
 {
 	bool defeated = m_players[player].openrand();
 	if (defeated) {
-		appendLog(playerName(player) + " is eliminated.");
+		appendLog(playerName(player) + "이 탈락했습니다.");
 	}
 	return defeated;
 }
@@ -706,7 +706,7 @@ bool GameEngine::openRandomCard(int player)
 void GameEngine::exchangeClaimedCard(int player, int card)
 {
 	if (m_players[player].exchgeCard(card, m_deck.shuffle(card))) {
-		appendLog(playerName(player) + " returns " + cardName(card) + " to the deck and draws a replacement.");
+		appendLog(playerName(player) + "이 " + cardName(card) + "을 덱에 돌려놓고 새 카드를 뽑았습니다.");
 	}
 }
 
@@ -765,7 +765,7 @@ void GameEngine::checkWinner()
 			m_state.winner = i;
 			clearPending();
 			if (!alreadyOver) {
-				appendLog(playerName(i) + " wins the game.");
+				appendLog(playerName(i) + "이 게임에서 승리했습니다.");
 			}
 			return;
 		}
@@ -790,22 +790,22 @@ void GameEngine::setPending(PendingType type, ActionKind action, int actor, int 
 
 std::string GameEngine::playerName(int index) const
 {
-	return index == 0 ? "Player" : "Computer " + std::to_string(index);
+	return index == 0 ? "플레이어" : "컴퓨터 " + std::to_string(index);
 }
 
 std::string GameEngine::cardName(int card) const
 {
 	switch (card) {
 	case 0:
-		return "Duke";
+		return "공작";
 	case 1:
-		return "Assassin";
+		return "암살자";
 	case 2:
-		return "Captain";
+		return "사령관";
 	case 3:
-		return "Contessa";
+		return "백작부인";
 	default:
-		return "Unknown";
+		return "알 수 없음";
 	}
 }
 
@@ -813,14 +813,14 @@ std::string GameEngine::actionName(ActionKind action) const
 {
 	switch (action) {
 	case ActionKind::ForeignAid:
-		return "Foreign Aid";
+		return "해외 원조";
 	case ActionKind::Tax:
-		return "Duke Tax";
+		return "공작 세금";
 	case ActionKind::Assassinate:
-		return "Assassination";
+		return "암살";
 	case ActionKind::Steal:
-		return "Steal";
+		return "강탈";
 	default:
-		return "Action";
+		return "행동";
 	}
 }

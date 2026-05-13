@@ -37,7 +37,7 @@ Popup {
             }
 
             BorderedButton {
-                text: "Close"
+                text: "닫기"
                 implicitWidth: 78
                 onClicked: guidePopup.close()
             }
@@ -79,10 +79,10 @@ Popup {
 
                 Repeater {
                     model: [
-                        { name: "공작 Duke", detail: "세금으로 코인 3개를 얻습니다. 다른 플레이어의 해외 원조를 막을 수 있습니다." },
-                        { name: "암살자 Assassin", detail: "코인 3개를 내고 상대 카드 1장을 공개하려고 시도합니다. 백작부인이 막을 수 있습니다." },
-                        { name: "사령관 Captain", detail: "상대에게서 최대 코인 2개를 빼앗습니다. 사령관은 강탈을 막을 수도 있습니다." },
-                        { name: "백작부인 Contessa", detail: "암살자의 공격을 막을 수 있습니다. 직접 수행하는 행동은 없습니다." }
+                        { name: "공작", detail: "세금으로 코인 3개를 얻습니다. 다른 플레이어의 해외 원조를 막을 수 있습니다." },
+                        { name: "암살자", detail: "코인 3개를 내고 상대 카드 1장을 공개하려고 시도합니다. 백작부인이 막을 수 있습니다." },
+                        { name: "사령관", detail: "상대에게서 최대 코인 2개를 빼앗습니다. 사령관은 강탈을 막을 수도 있습니다." },
+                        { name: "백작부인", detail: "암살자의 공격을 막을 수 있습니다. 직접 수행하는 행동은 없습니다." }
                     ]
 
                     Rectangle {

@@ -9,7 +9,7 @@ ApplicationWindow {
     minimumWidth: 720
     minimumHeight: 680
     visible: true
-    title: "Resistance: Coup"
+    title: "레지스탕스 쿠"
     color: "#f6f7f9"
     palette.window: "#f6f7f9"
     palette.windowText: "#1f2933"

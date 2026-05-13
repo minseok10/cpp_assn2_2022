@@ -5,7 +5,7 @@
 GameController::GameController(QObject* parent)
     : QObject(parent),
       m_screen("start"),
-      m_statusText("Ready to start a new Resistance: Coup session.")
+      m_statusText("새 레지스탕스 쿠 게임을 시작할 준비가 되었습니다.")
 {
 }
 
@@ -23,15 +23,15 @@ QString GameController::currentTurnText() const
 {
     const GameState& state = m_engine.state();
     if (!state.gameStarted) {
-        return "Not started";
+        return "시작 전";
     }
     if (state.gameOver) {
-        return state.winner == 0 ? "Winner: Player" : QString("Winner: Computer %1").arg(state.winner);
+        return state.winner == 0 ? "승자: 플레이어" : QString("승자: 컴퓨터 %1").arg(state.winner);
     }
     if (state.currentPlayer == 0) {
-        return "Player turn";
+        return "플레이어 차례";
     }
-    return QString("Computer %1 turn").arg(state.currentPlayer);
+    return QString("컴퓨터 %1 차례").arg(state.currentPlayer);
 }
 
 QVariantList GameController::players() const
@@ -49,7 +49,7 @@ QVariantList GameController::players() const
 
         QVariantMap playerMap;
         playerMap["index"] = player.index;
-        playerMap["name"] = player.human ? QString("Player") : QString("Computer %1").arg(player.index);
+        playerMap["name"] = player.human ? QString("플레이어") : QString("컴퓨터 %1").arg(player.index);
         playerMap["coins"] = player.coins;
         playerMap["dead"] = player.dead;
         playerMap["human"] = player.human;
@@ -138,82 +138,82 @@ bool GameController::gameOver() const
 void GameController::startGame()
 {
     m_engine.start();
-    refreshState("Choose Income, Foreign Aid, or Coup.");
+    refreshState("소득, 해외 원조, 쿠 중 하나를 선택하세요.");
     setScreen("game");
 }
 
 void GameController::backToStart()
 {
-    setStatusText("Ready to start a new Resistance: Coup session.");
+    setStatusText("새 레지스탕스 쿠 게임을 시작할 준비가 되었습니다.");
     setScreen("start");
 }
 
 void GameController::performIncome()
 {
     if (m_engine.income()) {
-        refreshState("Income resolved.");
+        refreshState("소득을 처리했습니다.");
     } else {
-        refreshState("Choose Coup when you have 10 or more coins.");
+        refreshState("코인이 10개 이상이면 쿠를 선택해야 합니다.");
     }
 }
 
 void GameController::performForeignAid()
 {
     if (m_engine.foreignAid()) {
-        refreshState(m_engine.state().waitingForHuman ? "Waiting for your challenge decision." : "Foreign Aid resolved.");
+        refreshState(m_engine.state().waitingForHuman ? "도전 여부를 선택하세요." : "해외 원조를 처리했습니다.");
     } else {
-        refreshState("Choose Coup when you have 10 or more coins.");
+        refreshState("코인이 10개 이상이면 쿠를 선택해야 합니다.");
     }
 }
 
 void GameController::performTax()
 {
     if (m_engine.tax()) {
-        refreshState("Duke Tax resolved.");
+        refreshState("공작 세금을 처리했습니다.");
     } else {
-        refreshState("Duke Tax is unavailable.");
+        refreshState("공작 세금을 사용할 수 없습니다.");
     }
 }
 
 void GameController::performAssassinate(int target)
 {
     if (m_engine.assassinate(target)) {
-        refreshState(m_engine.state().waitingForHuman ? "Waiting for your challenge decision." : "Assassination resolved.");
+        refreshState(m_engine.state().waitingForHuman ? "도전 여부를 선택하세요." : "암살을 처리했습니다.");
     } else {
-        refreshState("Assassination needs 3 coins and a living computer target.");
+        refreshState("암살하려면 코인 3개와 살아 있는 컴퓨터 대상이 필요합니다.");
     }
 }
 
 void GameController::performSteal(int target)
 {
     if (m_engine.steal(target)) {
-        refreshState(m_engine.state().waitingForHuman ? "Waiting for your challenge decision." : "Steal resolved.");
+        refreshState(m_engine.state().waitingForHuman ? "도전 여부를 선택하세요." : "강탈을 처리했습니다.");
     } else {
-        refreshState("Steal needs a living computer target.");
+        refreshState("강탈하려면 살아 있는 컴퓨터 대상이 필요합니다.");
     }
 }
 
 void GameController::performCoup(int target)
 {
     if (m_engine.coup(target)) {
-        refreshState("Coup resolved.");
+        refreshState("쿠를 처리했습니다.");
     }
     else {
-        refreshState("Coup needs 7 coins and a living computer target.");
+        refreshState("쿠를 하려면 코인 7개와 살아 있는 컴퓨터 대상이 필요합니다.");
     }
 }
 
 void GameController::answerChallenge(bool challenge)
 {
     if (m_engine.answerChallenge(challenge)) {
-        refreshState("Challenge decision resolved.");
+        refreshState("도전 결정을 처리했습니다.");
     }
 }
 
 void GameController::answerCounter(bool counter)
 {
     if (m_engine.answerCounter(counter)) {
-        refreshState("Counteraction decision resolved.");
+        refreshState("방해 결정을 처리했습니다.");
     }
 }
 

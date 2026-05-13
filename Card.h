@@ -18,11 +18,10 @@ public:
 	int job;
 	int open;
 
-	Card() : du("   Duke "), as("Assassin"), ca(" Captain"), co("Contessa")
+	Card() : du("공작"), as("암살자"), ca("사령관"), co("백작부인")
 	{
 		job = 4;
 		open = 0;
 	}
 	void setJob(int);
 };
-
