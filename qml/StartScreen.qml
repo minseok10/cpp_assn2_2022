@@ -18,7 +18,7 @@ Item {
         spacing: 24
 
         Label {
-            text: "레지스탕스 쿠"
+            text: "resistance coup"
             Layout.fillWidth: true
             horizontalAlignment: Text.AlignHCenter
             font.pixelSize: 44
